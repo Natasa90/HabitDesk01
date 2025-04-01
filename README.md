@@ -29,9 +29,9 @@ HabitDesk is a React Native mobile app designed to help users track their learni
 Clone the repository:
 
 ```
-git clone https://github.com/Natasa90/habitdesk.git
+git clone https://github.com/Natasa90/HabitDesk01.git
 
-cd HabitDesk
+cd HabitDesk01
 ```
 
 Install dependencies:
