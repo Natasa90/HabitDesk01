@@ -12,7 +12,20 @@
       "distribution": "internal"
     },
     "production": {
-      "autoIncrement": true,
+      "ios": {
+        "autoIncrement": true,
+        "resourceClass": "m1-medium"
+      },
+      "android": {
+        "autoIncrement": true
+      },
+      "distribution": "store"
+    },
+    "archive": {
+      "ios": {
+        "autoIncrement": true,
+        "resourceClass": "m1-medium"
+      },
       "distribution": "store"
     }
   },

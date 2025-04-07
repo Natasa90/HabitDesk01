@@ -4,45 +4,43 @@ dotenv.config();
 
 export default {
   expo: {
-    name: "HabitDesk01", // You can adjust this name as needed
-    slug: "HabitDesk01", // Same for slug
+    name: "habitdesk",
+    slug: "habitdesk",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/icon.png", // Set your icon here
+    icon: "./assets/images/icon.png",
     userInterfaceStyle: "light",
     newArchEnabled: true,
     splash: {
-      image: "./assets/splash-icon.png", // Your splash screen image
+      image: "./assets/images/slavoio-logo.png", 
       resizeMode: "contain",
       backgroundColor: "#ffffff",
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.anonymous.habitdesk", // Add your bundle identifier
-      buildNumber: "1", // Set the build number
+      bundleIdentifier: "com.anonymous.habitdesk", 
+      buildNumber: "1", 
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
-        pushNotifications: true, // Enable push notifications
+        "aps-environment": "production", // Add this for production environment
       },
     },
     android: {
-      adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png", // Your adaptive icon
-        backgroundColor: "#ffffff", // Background color for adaptive icon
-      },
-      package: "com.anonymous.habitdesk", // Android package name
+      package: "com.anonymous.habitdesk", 
     },
-    scheme: "habitdesk", // Scheme for deep linking
-    platforms: ["ios", "android", "web"], // Supported platforms
+    scheme: "habitdesk", 
+    platforms: ["ios", "android", "web"], 
     extra: {
-      supabaseUrl: process.env.SUPABASE_URL, // Your Supabase URL
-      supabaseKey: process.env.SUPABASE_KEY, // Supabase key
-      ascAppId: process.env.ASC_APP_ID, // ASC app ID
-      ascKeyName: process.env.ASC_KEY_NAME, // ASC key name
-      ascKeyId: process.env.ASC_KEY_ID, // ASC key ID
+      supabaseUrl: process.env.SUPABASE_URL, 
+      supabaseKey: process.env.SUPABASE_KEY, 
+      ascAppId: process.env.ASC_APP_ID, 
+      ascKeyName: process.env.ASC_KEY_NAME, 
+      ascKeyId: process.env.ASC_KEY_ID,
       eas: {
-        projectId: "e2b1a9f5-a699-4631-b5c1-8c2049a10d0d", // Your EAS project ID
+        projectId: "e2b1a9f5-a699-4631-b5c1-8c2049a10d0d", 
       },
+      apnsKeyId: process.env.APNS_KEY_ID, 
+      apnsTeamId: process.env.APNS_TEAM_ID, 
     },
   },
 };
