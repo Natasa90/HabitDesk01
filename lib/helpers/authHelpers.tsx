@@ -1,6 +1,7 @@
 import { Alert } from "react-native";
 import supabase from "../supabase";
 import { NavigationProp } from "@react-navigation/native";
+import { isValidEmail } from "../constants";
 import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
 import * as AuthSession from "expo-auth-session";
 
@@ -15,12 +16,17 @@ export const handlePasswordReset = async (
   return;
  }
 
+if (!isValidEmail(email)) {
+  setIsEmailValid(false);
+  Alert.alert("Invalid Email", "Please enter a valid email address.");
+  return;
+ }
+
  try {
   const { error } = await supabase.auth.resetPasswordForEmail(email);
 
   if (error) {
    Alert.alert(
-    "Account Not Found",
     "No account found with this email address."
    );
   } else {

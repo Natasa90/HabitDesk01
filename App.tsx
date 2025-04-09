@@ -33,7 +33,7 @@ export default function App() {
       initialRouteName="Splash"
       screenOptions={{
        animation: "none",
-       contentStyle: { backgroundColor: "transparent" }, // dive deep - mark down toughts 
+       contentStyle: { backgroundColor: "transparent" }, 
       }}
      >
       <Stack.Screen
