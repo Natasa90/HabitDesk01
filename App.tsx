@@ -21,7 +21,7 @@ import { BackgroundWrapper } from "./components/Layout/BackgroundWrapper";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
- const [userInfo, setUserInfo] = useState<UserContextProps["userInfo"]>(null);
+ const [userInfo, setUserInfo] = useState<UserContextProps["userInfo"]>(undefined);
 
  const fonts = useFonts();
 
@@ -33,7 +33,7 @@ export default function App() {
       initialRouteName="Splash"
       screenOptions={{
        animation: "none",
-       contentStyle: { backgroundColor: "transparent" }, // dive deep - mark down toughts 
+       contentStyle: { backgroundColor: "transparent" }, 
       }}
      >
       <Stack.Screen

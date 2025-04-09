@@ -14,7 +14,7 @@ export const SplashScreen = () => {
   const fetchSessionAndUser = async () => {
    try {
     const { data, error } = await supabase.auth.getSession();
-    if (!data.session) {
+    if (error || !data.session) {
      console.log("No active session found. Redirecting to Home.");
      setUserInfo(null);
      navigation.replace("Home");
@@ -22,15 +22,15 @@ export const SplashScreen = () => {
     }
 
     const { data: user, error: userError } = await supabase.auth.getUser();
-    if (userError) {
-     console.error("Error fetching user:", userError.message);
+    if (userError || !user?.user?.email) {
+     console.error("Error fetching user:", userError?.message);
      setUserInfo(null);
      navigation.replace("Home");
      return;
     }
 
     setUserInfo({
-     email: user?.user?.email || undefined,
+     email: user.user.email
     });
 
     navigation.replace("UserProfile");

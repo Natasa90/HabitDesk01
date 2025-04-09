@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 
-export interface UserInfo {
-    email?: string;
-}
+export type UserInfo = {
+  email: string;
+} | null | undefined;
 
 export interface UserContextProps {
-    userInfo: UserInfo | null;
-    setUserInfo: Dispatch<SetStateAction<UserInfo | null>>;
-};
+  userInfo: UserInfo;
+  setUserInfo: (user: UserInfo) => void;
+}
