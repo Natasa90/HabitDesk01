@@ -18,11 +18,10 @@ export default {
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.anonymous.habitdesk", 
-      buildNumber: "1", 
+      bundleIdentifier: "com.anonymous.habitdesk",  
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
-        "aps-environment": "production", // Add this for production environment
+        "aps-environment": "production",
       },
     },
     android: {
@@ -33,14 +32,9 @@ export default {
     extra: {
       supabaseUrl: process.env.SUPABASE_URL, 
       supabaseKey: process.env.SUPABASE_KEY, 
-      ascAppId: process.env.ASC_APP_ID, 
-      ascKeyName: process.env.ASC_KEY_NAME, 
-      ascKeyId: process.env.ASC_KEY_ID,
       eas: {
-        projectId: "e2b1a9f5-a699-4631-b5c1-8c2049a10d0d", 
+        "projectId": "afa78e4f-bbcb-49e0-882d-458c325a8b36"
       },
-      apnsKeyId: process.env.APNS_KEY_ID, 
-      apnsTeamId: process.env.APNS_TEAM_ID, 
     },
   },
 };

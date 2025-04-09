@@ -1,5 +1,5 @@
 {
-  "name": "habitdesk01",
+  "name": "habitdesk",
   "license": "0BSD",
   "version": "1.0.0",
   "main": "index.ts",
@@ -10,6 +10,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.1.6",
+    "@babel/runtime": "^7.20.6",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-picker/picker": "2.9.0",
     "@react-navigation/elements": "^2.2.5",
@@ -21,7 +23,7 @@
     "axios": "^1.7.9",
     "camelcase": "5.3.1",
     "dotenv": "^16.4.7",
-    "expo": "~52.0.41",
+    "expo": "^52.0.44",
     "expo-auth-session": "^6.0.3",
     "expo-blur": "~14.0.3",
     "expo-constants": "^17.0.8",
@@ -31,10 +33,11 @@
     "expo-status-bar": "~2.0.1",
     "nativewind": "^2.0.11",
     "react": "18.3.1",
-    "react-native": "0.76.8",
+    "react-native": "0.76.9",
     "react-native-animatable": "^1.4.0",
     "react-native-calendars": "^1.1307.0",
     "react-native-dotenv": "^3.4.11",
+    "react-native-gesture-handler": "~2.20.2",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-paper": "^5.12.5",
     "react-native-picker-select": "^9.3.1",

@@ -10,17 +10,17 @@ if (!SUPABASE_CONFIG.url || !SUPABASE_CONFIG.key) {
 }
 
 const supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key, {
-    auth: {
-        storage: AsyncStorage, 
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: false, 
-        },
-    global: {
-        headers: {
-        apikey: SUPABASE_CONFIG.key,
-        },
+  auth: {
+    storage: AsyncStorage,
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false,
+  },
+  global: {
+    headers: {
+      apikey: SUPABASE_CONFIG.key,
     },
+  },
 });
 
-export default supabase; 
+export default supabase;

@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { View, TouchableOpacity, Linking } from "react-native";
-import { TextWrapper } from "@/components/Layout";
+import { TextWrapper } from '../TextWrapper'
 import Icon from "react-native-vector-icons/FontAwesome";
 import { CardLayoutProps } from "@/types/LayoutTypes";
-import { GradientText } from "../../GradientText";
-import { styles } from "@/components/Layout";
+import { GradientText } from "@/components/GradientText";
+import { styles } from "../globalStyles";
 
 export const CardLayout: FC<CardLayoutProps> = ({
  title,
