@@ -3,17 +3,13 @@ import { View, TextInput, TouchableOpacity, Alert } from "react-native";
 import { TextWrapper } from "@/components/Layout";
 import { FontAwesome } from "@expo/vector-icons";
 import supabase from "@/lib/supabase";
-import { useRoute, useNavigation } from "@react-navigation/native";
-import { styles } from "@/components/Layout"; // Ensure you have your style definitions here
+import { useTypedNavigation } from "@/lib/hooks";
+import { styles } from "@/components/Layout"; 
 
-const ResetPasswordScreen = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
+export const CreateNewPasswordForm = () => {
+  const navigation = useTypedNavigation();
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  // Extract the token from route params
-  const { token }: any = route.params || {};
 
   const handlePasswordReset = async () => {
     if (!newPassword.trim()) {
@@ -23,8 +19,7 @@ const ResetPasswordScreen = () => {
 
     setLoading(true);
     try {
-      // Reset password using Supabase API
-      const { error } = await supabase.auth.api.updateUser(token, {
+      const { error } = await supabase.auth.updateUser({
         password: newPassword,
       });
 
@@ -32,7 +27,7 @@ const ResetPasswordScreen = () => {
         Alert.alert("Error", "Something went wrong. Please try again later.");
       } else {
         Alert.alert("Success", "Your password has been reset.");
-        navigation.navigate("Login"); // Navigate to login after reset
+       navigation.navigate("Login"); 
       }
     } catch (error) {
       Alert.alert("Error", "An error occurred. Please try again.");
@@ -104,4 +99,3 @@ const ResetPasswordScreen = () => {
   );
 };
 
-export default ResetPasswordScreen;

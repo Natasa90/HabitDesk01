@@ -9,7 +9,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { isValidEmail } from "@/lib/constants";
 import { styles } from "@/components/Layout";
 
-export const ResetPassword: FC<ResetPasswordProps> = ({ resetPassword }) => {
+export const ResetPasswordForm: FC<ResetPasswordProps> = ({ resetPassword }) => {
  const [email, setEmail] = useState("");
  const [isEmailValid, setIsEmailValid] = useState(true);
  const navigation = useTypedNavigation();

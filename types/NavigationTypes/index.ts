@@ -6,4 +6,5 @@ export type RootStackParamList = {
     FreeResources: undefined;
     CreateAccount: undefined;
     ResetPassword: undefined;
+    CreateNewPassword: undefined;
 };

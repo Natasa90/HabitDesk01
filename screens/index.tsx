@@ -4,6 +4,7 @@ import { HomeScreen } from "./home";
 import { LoginScreen } from "./login";
 import { PorchScreen } from "./porch";
 import { ResetPasswordScreen } from "./resetPassword";
+import { CreateNewPasswordScreen } from "./createNewPassword";
 import { SplashScreen } from "./splashScreen";
 import { UserProfileScreen } from "./userProfile";
 
@@ -14,6 +15,7 @@ export {
  LoginScreen,
  PorchScreen,
  ResetPasswordScreen,
+ CreateNewPasswordScreen,
  SplashScreen,
  UserProfileScreen,
 };
