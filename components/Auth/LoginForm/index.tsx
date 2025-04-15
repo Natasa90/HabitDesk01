@@ -1,10 +1,11 @@
 import { useState, FC, useContext } from "react";
 import { TextWrapper } from "@/components/Layout";
 import { View, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
+import { GithubLogin } from "@/components/Buttons/GitHubLoginButton";
 import { LoginProps } from "@/types/AuthTypes";
 import { useTypedNavigation } from "@/lib/hooks";
 import { UserInfoContext } from "@/context/UserInfoContext";
-import { AccountButton, GitHubButton } from "@/components/Buttons";
+import { AccountButton } from "@/components/Buttons";
 import { FontAwesome } from "@expo/vector-icons";
 import { signInWithEmail } from "@/lib/helpers";
 import { styles } from "@/components/Layout";
@@ -70,7 +71,7 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
           <AccountButton onPress={handleLogin}>
             <TextWrapper className="text-white font-IBM_semibold">Log In</TextWrapper>
           </AccountButton>
-          <GitHubButton />
+         <GithubLogin /> 
         </>
       )}
 

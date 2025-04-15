@@ -11,11 +11,13 @@ import {
  FreeResourcesScreen,
  CreateAccountScreen,
  ResetPasswordScreen,
+ CreateNewPasswordScreen
 } from "./screens";
 import { UserInfoContext } from "./context/UserInfoContext";
 import { UserContextProps } from "./types/UserTypes";
 import Footer from "./components/Footer";
 import { useFonts } from "./lib/hooks/useFonts";
+import { DeepLinkingHandler } from "./components/navigation/DeepLinkingHandler";
 import { BackgroundWrapper } from "./components/Layout/BackgroundWrapper";
 
 const Stack = createNativeStackNavigator();
@@ -28,12 +30,29 @@ export default function App() {
  return (
   <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>
    <BackgroundWrapper>
-    <NavigationContainer>
+     <NavigationContainer
+          linking={{
+            prefixes: ['habitdesk://'],
+            config: {
+              screens: {
+                Home: 'home',
+                Login: 'login',
+                UserProfile: 'profile',
+                Porch: 'porch',
+                FreeResources: 'free-resources',
+                CreateAccount: 'create-account',
+                ResetPassword: 'reset-password',
+                CreateNewPassword: 'create-new-password',
+              },
+            },
+          }}
+        >
+     <DeepLinkingHandler />
      <Stack.Navigator
       initialRouteName="Splash"
       screenOptions={{
        animation: "none",
-       contentStyle: { backgroundColor: "transparent" }, // dive deep - mark down toughts 
+       contentStyle: { backgroundColor: "transparent" }, 
       }}
      >
       <Stack.Screen
@@ -100,6 +119,16 @@ export default function App() {
       <Stack.Screen
        name="ResetPassword"
        component={ResetPasswordScreen}
+       options={{
+        headerStyle: {
+         backgroundColor: "#f8f8f8",
+        },
+        headerTitle: "",
+       }}
+      />
+      <Stack.Screen
+       name="CreateNewPassword"
+       component={CreateNewPasswordScreen}
        options={{
         headerStyle: {
          backgroundColor: "#f8f8f8",

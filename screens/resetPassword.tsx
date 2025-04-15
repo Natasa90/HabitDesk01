@@ -1,4 +1,4 @@
-import { ResetPassword } from "@/components/Auth";
+import { ResetPasswordForm } from "@/components/Auth";
 import { useTypedNavigation } from "@/lib/hooks";
 
 export const ResetPasswordScreen = () => {
@@ -9,6 +9,6 @@ export const ResetPasswordScreen = () => {
  };
 
  return (
-   <ResetPassword resetPassword={handleCancelReset} />
+   <ResetPasswordForm resetPassword={handleCancelReset} />
  );
 };

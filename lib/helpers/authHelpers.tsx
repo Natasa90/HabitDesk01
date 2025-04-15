@@ -1,40 +1,44 @@
 import { Alert } from "react-native";
 import supabase from "../supabase";
 import { NavigationProp } from "@react-navigation/native";
-import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
-import * as AuthSession from "expo-auth-session";
+import { isValidEmail } from "../constants";
 
 export const handlePasswordReset = async (
- email: string,
- setIsEmailValid: (valid: boolean) => void,
- navigation: NavigationProp<any>
+  email: string,
+  setIsEmailValid: (valid: boolean) => void,
+  navigation: NavigationProp<any>
 ) => {
- if (!email.trim()) {
-  setIsEmailValid(false);
-  Alert.alert("Please add an email.");
-  return;
- }
-
- try {
-  const { error } = await supabase.auth.resetPasswordForEmail(email);
-
-  if (error) {
-   Alert.alert(
-    "Account Not Found",
-    "No account found with this email address."
-   );
-  } else {
-   Alert.alert("Success", `A password reset email has been sent to ${email}.`, [
-    {
-     text: "OK",
-     onPress: () => navigation.navigate("Login"),
-    },
-   ]);
+  if (!email.trim()) {
+    setIsEmailValid(false);
+    Alert.alert("Please add an email.");
+    return;
   }
- } catch (error: any) {
-  Alert.alert("Error", "Something went wrong. Please try again later.");
-  console.log(`<ResetPassword Request>Error Msg: ${error.message}`);
- }
+
+  if (!isValidEmail(email)) {
+    setIsEmailValid(false);
+    Alert.alert("Invalid Email", "Please enter a valid email address.");
+    return;
+  }
+
+  try {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "habitdesk://create-new-password",  
+    });
+
+    if (error) {
+      Alert.alert("No account found with this email address.");
+    } else {
+      Alert.alert("Success", `A password reset email has been sent to ${email}.`, [
+        {
+          text: "OK",
+          onPress: () => navigation.navigate("Home"),  
+        },
+      ]);
+    }
+  } catch (error: any) {
+    Alert.alert("Error", "Something went wrong. Please try again later.");
+    console.log(`<ResetPassword Request>Error Msg: ${error.message}`);
+  }
 };
 
 export const signUpWithEmail = async (
@@ -129,35 +133,5 @@ export const signInWithEmail = async (
  return false;
 };
 
-///////////////////////// GItHUB LOGIN //////////////////////////////////////
 
-import { Linking } from "react-native";
 
-export const signInWithGitHub = async () => {
- try {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-   provider: "github",
-   options: {
-    redirectTo: "exp://192.168.8.108:8081", // Must match Supabase
-   },
-  });
-
-  console.log("Supabase response:", data);
-
-  if (error) {
-   console.error("GitHub Login Error:", error.message);
-   alert(`GitHub Login Error: ${error.message}`);
-   return;
-  }
-
-  if (data?.url) {
-   console.log("Opening URL:", data.url);
-   await Linking.openURL(data.url);
-  } else {
-   console.log("No URL received from Supabase.");
-  }
- } catch (error) {
-  console.error("Unexpected Error:", error);
-  alert(`Unexpected Error: ${error}`);
- }
-};
