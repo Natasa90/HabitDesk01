@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import { TextWrapper } from "@/components/Layout";
+import { AccountButton } from "../AccountButton";
 import { UserInfoContext } from "@/context/UserInfoContext";
 import { useTypedNavigation } from "@/lib/hooks";
+import { CONFIG } from "@/lib/config";
 import * as AuthSession from "expo-auth-session";
 
 export const GithubLogin = () => {
@@ -17,7 +19,7 @@ export const GithubLogin = () => {
 
     const [request, response, promptAsync] = AuthSession.useAuthRequest(
         {
-            clientId: "Ov23liLZIdibZnNCugut",
+            clientId: CONFIG.github.clientId,
             redirectUri,
             scopes: ["read:user", "user:email"],
         },
@@ -45,9 +47,8 @@ export const GithubLogin = () => {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        client_id: "Ov23liLZIdibZnNCugut",
-                        client_secret:
-                            "f6ef09db3e2cbaea74ba847611566bd1873c51bb",
+                        client_id: CONFIG.github.clientId,
+                        client_secret: CONFIG.github.clientSecret,
                         code,
                         redirect_uri: redirectUri,
                     }),
@@ -88,15 +89,17 @@ export const GithubLogin = () => {
     };
 
     return (
-        <View className="items-center space-y-4 mt-10">
-            <Button
-                title="Login with GitHub"
+        <View className="items-center space-y-4">
+            <AccountButton
                 onPress={() => {
                     console.log("promptAsync triggered");
                     promptAsync();
                 }}
-                disabled={!request}
-            />
+                disabled={!request}>
+                <TextWrapper className="text-white font-IBM_semibold">
+                  Login with GitHub
+                </TextWrapper>
+            </AccountButton>
             {signinError && (
                 <TextWrapper className="text-red-500">
                     {signinError}

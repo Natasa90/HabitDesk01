@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import * as Linking from "expo-linking";
-import { useTypedNavigation } from "@/lib/hooks"; 
+import { useTypedNavigation } from "@/lib/hooks";
 
 export const DeepLinkingHandler: FC = () => {
   const navigation = useTypedNavigation();
@@ -8,40 +8,41 @@ export const DeepLinkingHandler: FC = () => {
   useEffect(() => {
     const handleDeepLink = ({ url }: { url: string }) => {
       const parsed = Linking.parse(url);
-      if (!parsed.path) {
-        navigation.navigate("Home");
-      }
-      if (parsed.path === "home") {
-        navigation.navigate("Home");
-      }
-      if (parsed.path === "login") {
-        navigation.navigate("Login");
-      }
-      if (parsed.path === "profile") {
-        navigation.navigate("UserProfile");
-      }
-      if (parsed.path === "porch") {
-        navigation.navigate("Porch");
-      }
-      if (parsed.path === "free-resources") {
-        navigation.navigate("FreeResources");
-      }
-      if (parsed.path === "create-account") {
-        navigation.navigate("CreateAccount");
-      }
-      if (parsed.path === "reset-password") {
-        navigation.navigate("ResetPassword");
-      }
-      if (parsed.path === "create-new-password") {
-        navigation.navigate("CreateNewPassword");
+      const route = parsed.path || parsed.hostname;
+
+      switch (route?.toLowerCase()) {
+        case "home":
+          navigation.navigate("Home");
+          break;
+        case "login":
+          navigation.navigate("Login");
+          break;
+        case "profile":
+          navigation.navigate("UserProfile");
+          break;
+        case "porch":
+          navigation.navigate("Porch");
+          break;
+        case "free-resources":
+          navigation.navigate("FreeResources");
+          break;
+        case "create-account":
+          navigation.navigate("CreateAccount");
+          break;
+        case "reset-password":
+          navigation.navigate("ResetPassword");
+          break;
+        case "create-new-password":
+          navigation.navigate("CreateNewPassword");
+          break;
+        default:
+          navigation.navigate("Home");
       }
     };
 
     const subscription = Linking.addEventListener("url", handleDeepLink);
-
-    return () => subscription.remove(); 
+    return () => subscription.remove();
   }, [navigation]);
 
-  return null; 
+  return null;
 };
-

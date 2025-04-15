@@ -19,7 +19,7 @@ export default {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.anonymous.habitdesk",  
-      buildNumber: "10",  // Increment the build number
+      buildNumber: "10",  
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
         "aps-environment": "production",
@@ -52,6 +52,8 @@ export default {
     extra: {
       supabaseUrl: process.env.SUPABASE_URL, 
       supabaseKey: process.env.SUPABASE_KEY, 
+      githubClientId: process.env.GITHUB_CLIENT_ID,
+      githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
       eas: {
         projectId: "afa78e4f-bbcb-49e0-882d-458c325a8b36"
       },
