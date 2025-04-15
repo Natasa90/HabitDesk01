@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import { Linking } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
@@ -17,15 +18,49 @@ import { UserInfoContext } from "./context/UserInfoContext";
 import { UserContextProps } from "./types/UserTypes";
 import Footer from "./components/Footer";
 import { useFonts } from "./lib/hooks/useFonts";
+import supabase from "./lib/supabase";
 import { DeepLinkingHandler } from "./components/navigation/DeepLinkingHandler";
 import { BackgroundWrapper } from "./components/Layout/BackgroundWrapper";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+ const [initialRoute, setInitialRoute] = useState("Splash"); 
  const [userInfo, setUserInfo] = useState<UserContextProps["userInfo"]>(null);
 
  const fonts = useFonts();
+
+ useEffect(() => {
+    const handleDeepLink = async (url: string) => {
+      const parsedUrl = new URL(url);
+      const accessToken = parsedUrl.hash?.split("&")[0]?.split("=")[1];
+      const refreshToken = parsedUrl.hash?.split("&")[1]?.split("=")[1];
+
+      if (accessToken && refreshToken) {
+        try {
+          await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+          setInitialRoute("CreateNewPassword"); 
+        } catch (err) {
+          console.error("Error setting session", err);
+          setInitialRoute("Splash");
+        }
+      } else {
+        setInitialRoute("Splash");
+      }
+    };
+
+    const handleUrl = ({ url }: { url: string }) => handleDeepLink(url);
+    Linking.addEventListener("url", handleUrl);
+
+    Linking.getInitialURL().then((url) => {
+      if (url) handleDeepLink(url);
+      else setInitialRoute("Splash");
+    });
+
+    return () => {
+      Linking.removeAllListeners("url");
+    };
+  }, [setUserInfo]);
 
  return (
   <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { View, Button } from "react-native";
 import { TextWrapper } from "@/components/Layout";
+import { AccountButton } from "../AccountButton";
 import { UserInfoContext } from "@/context/UserInfoContext";
 import { useTypedNavigation } from "@/lib/hooks";
 import * as AuthSession from "expo-auth-session";
@@ -88,15 +89,17 @@ export const GithubLogin = () => {
     };
 
     return (
-        <View className="items-center space-y-4 mt-10">
-            <Button
-                title="Login with GitHub"
+        <View className="items-center space-y-4">
+            <AccountButton
                 onPress={() => {
                     console.log("promptAsync triggered");
                     promptAsync();
                 }}
-                disabled={!request}
-            />
+                disabled={!request}>
+                <TextWrapper className="text-white font-IBM_semibold">
+                  Login with GitHub
+                </TextWrapper>
+            </AccountButton>
             {signinError && (
                 <TextWrapper className="text-red-500">
                     {signinError}
