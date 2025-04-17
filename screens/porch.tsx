@@ -1,9 +1,7 @@
-import React, { useContext } from "react";
+import { useEffect, useContext } from "react";
 import {
  FlatList,
  View,
- ActivityIndicator,
- TouchableOpacity,
 } from "react-native";
 import {
  PorchListHeader,
@@ -26,7 +24,11 @@ export const PorchScreen = () => {
   isFiltering,
  } = usePorchs(userInfo?.email);
 
- const learningDays = usePorchLearningDays(userInfo?.email);
+ const { learningDays, refreshLearningDays } = usePorchLearningDays(userInfo?.email);
+
+ useEffect(() => {
+    refreshLearningDays();
+  }, [porchs, refreshLearningDays]);
 
  const renderItem = ({ item }: any) => (
   <PorchList porchs={[item]} setPorchs={setPorchs} />
