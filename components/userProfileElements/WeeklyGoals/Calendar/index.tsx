@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { PorchCalendarProps } from "@/Types/PorchTypes";
+import { PorchCalendarProps } from "@/types/PorchTypes";
 import { View } from "react-native";
 import { Calendar } from "react-native-calendars";
 

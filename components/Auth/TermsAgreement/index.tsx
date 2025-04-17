@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { View, Linking } from "react-native";
 import { TextWrapper } from "@/components/Layout";
-import { Checkbox } from "react-native-paper";
 import { TermsAgreementProps } from "@/types/AuthTypes";
 import { CustomCheckbox } from "../CustomCheckbox";
 

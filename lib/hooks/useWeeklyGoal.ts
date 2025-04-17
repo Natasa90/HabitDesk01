@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import supabase from "@/lib/supabase";
-import { UserInfo } from "@/Types/User";
+import { UserInfo } from "@/types/UserTypes";
 
 export const useWeeklyGoal = (userInfo: UserInfo | null) => {
   const [weeklyGoal, setWeeklyGoal] = useState<number>(1);

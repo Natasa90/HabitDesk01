@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { View } from "react-native";
-import { PorchListProps } from "@/Types/PorchTypes";
-import { PorchType } from "@/Types/PorchTypes";
+import { PorchListProps } from "@/types/PorchTypes";
+import { PorchType } from "@/types/PorchTypes";
 import { PorchDailyUpdate } from "../PorchDailyUpdate";
 import { TextWrapper } from "@/components/Layout";
 

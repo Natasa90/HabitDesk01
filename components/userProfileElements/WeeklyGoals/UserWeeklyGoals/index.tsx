@@ -84,8 +84,8 @@ export const UserWeeklyGoals = () => {
     onRequestClose={() => setShowGoalsForm(false)}
    >
     <View className="flex-1 justify-center items-center">
-     <BlurView intensity={80} tint="dark" style={styles.updateGoalFormsBlur} />
-     <View className="bg-gray-300 rounded-lg p-4 shadow-md">
+     <BlurView intensity={30} tint="dark" style={styles.updateGoalFormsBlur} />
+     <View className="bg-gray-200 rounded-lg p-2 shadow-md">
       <GoalsForm
        onClose={() => setShowGoalsForm(false)}
        updateGoal={setWeeklyGoal}
