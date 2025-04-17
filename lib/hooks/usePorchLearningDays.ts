@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import supabase from "@/lib/supabase";
 
 export const usePorchLearningDays = (email?: string) => {
   const [learningDays, setLearningDays] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchLearningDays = async () => {
+
+const fetchLearningDays = useCallback(async () => {
       if (!email) return;
 
+      setLoading(true); 
       const { count, error } = await supabase
         .from("porch")
         .select("*", { count: "exact" })
@@ -18,9 +20,12 @@ export const usePorchLearningDays = (email?: string) => {
       } else {
         setLearningDays(count || 0);
       }
-    };
-
-    fetchLearningDays();
+      setLoading(false); 
   }, [email]);
-  return learningDays;
+  
+  useEffect(() => {
+    fetchLearningDays()
+  }, [fetchLearningDays])
+
+  return { learningDays, loading, refreshLearningDays: fetchLearningDays };
 };

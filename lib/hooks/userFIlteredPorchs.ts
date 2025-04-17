@@ -1,6 +1,6 @@
 import { useState } from "react";
 import supabase from "@/lib/supabase";
-import { PorchType } from "@/Types/PorchTypes";
+import { PorchType } from "@/types/PorchTypes";
 
 export const useFilteredPorchs = (email?: string) => {
   const [porchs, setPorchs] = useState<PorchType[]>([]);
@@ -9,11 +9,11 @@ export const useFilteredPorchs = (email?: string) => {
 
   const loadUserPorchs = async () => {
     if (!email) {
-      console.log("Email is undefined. Exiting loadUserPorchs."); // Debugging
+      console.log("Email is undefined. Exiting loadUserPorchs."); 
       return;
     }
 
-    console.log("Loading user porchs for email:", email); // Debugging
+    console.log("Loading user porchs for email:", email);
     setLoading(true);
 
     try {
@@ -26,7 +26,7 @@ export const useFilteredPorchs = (email?: string) => {
 
       if (error) throw new Error(error.message);
 
-      console.log("Fetched user porchs:", userPorchs); // Debugging
+      console.log("Fetched user porchs:", userPorchs); 
       setPorchs(userPorchs);
       setFiltering(true);
     } catch (err) {

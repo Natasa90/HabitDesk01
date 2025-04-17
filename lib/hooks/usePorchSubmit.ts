@@ -1,14 +1,15 @@
 import { useState, useContext } from "react";
 import { Alert } from "react-native";
 import { UserInfoContext } from "@/context/UserInfoContext";
-import { PorchType } from "@/Types/PorchTypes";
+import { PorchType } from "@/types/PorchTypes";
 import supabase from "@/lib/supabase";
 import { isValidHttpUrl } from "lib/constants";
 
 export const usePorchSubmit = (
   setPorchs: React.Dispatch<React.SetStateAction<PorchType[]>>,
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>,
-  resetForm: () => void
+  resetForm: () => void,
+  refreshLearningDays: () => void 
 ) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [responseUpdate, setResponseUpdate] = useState<string>("");
@@ -32,7 +33,7 @@ export const usePorchSubmit = (
         }
 
         setPorchs((porchs: PorchType[]) => [newUpdate[0], ...porchs]);
-
+        refreshLearningDays();
         setTimeout(() => {
           resetForm();
           setIsUploading(false);
