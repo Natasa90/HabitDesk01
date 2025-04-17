@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import supabase from "@/lib/supabase";
-import { PorchType } from "@/Types/PorchTypes";
+import { PorchType } from "@/types/PorchTypes";
 
 export const usePorchs = (userEmail?: string) => {
   const [porchs, setPorchs] = useState<PorchType[]>([]);
