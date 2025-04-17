@@ -16,7 +16,10 @@ export const useAddTask = (toDo: string[], setToDo: React.Dispatch<React.SetStat
 
       const { data, error } = await supabase
         .from("tasks")
-        .insert([{ task: input }]);
+        .insert([{ 
+          task: input,
+          user_email: userInfo.email,
+        }]);
 
       if (error) {
         setError("Error storing task!");
