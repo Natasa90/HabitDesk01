@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Alert } from "react-native";
 import { UserInfoContext } from "@/context/UserInfoContext";
-import { PorchType } from "@/Types/PorchTypes";
+import { PorchType } from "@/types/PorchTypes";
 import supabase from "@/lib/supabase";
 import { isValidHttpUrl } from "lib/constants";
 
