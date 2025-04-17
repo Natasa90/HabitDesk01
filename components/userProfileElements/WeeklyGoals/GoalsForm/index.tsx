@@ -17,14 +17,14 @@ export const GoalsForm: FC<GoalsFormProps> = ({ onClose, updateGoal }) => {
   updateWeeklyGoal(selectedGoal);
   updateGoal(selectedGoal);
   onClose();
- };
+ }
 
  if (loading) {
   return <ActivityIndicator size="large" color="#0000ff" />;
  }
 
  return (
-  <View className="border-2 border-gray-400 bg-white rounded-lg p-4">
+  <View className="border-2 border-gray-400 bg-white rounded-lg p-6">
    <TouchableOpacity onPress={onClose} className="absolute top-3 right-3">
     <Icon name="x" size={20} color="gray" />
    </TouchableOpacity>

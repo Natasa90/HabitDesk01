@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { TextWrapper } from "@/components/Layout";
-import { PorchListHeaderProps } from "@/Types/PorchTypes";
+import { PorchListHeaderProps } from "@/types/PorchTypes";
 
 export const PorchListHeader: FC<PorchListHeaderProps> = ({
  learningDays,

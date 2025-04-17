@@ -6,7 +6,7 @@ import {
  TouchableOpacity,
  ActivityIndicator,
 } from "react-native";
-import { PorchFormProps } from "@/Types/PorchTypes";
+import { PorchFormProps } from "@/types/PorchTypes";
 import Icon from "react-native-vector-icons/Feather";
 import { BlurView } from "expo-blur";
 import { TextWrapper } from "@/components/Layout";
@@ -35,34 +35,37 @@ export const PorchUpdateForm: FC<PorchFormProps> = ({
    <View className="flex-1 items-center justify-center bg-opacity-70">
     <BlurView
      style={styles.updateModalBLur}
-     intensity={80}
+     intensity={30}
      tint="dark"
     />
     <View
-     className="bg-gray-200 p-4 rounded-xl w-5/6 shadow-lg"
+     className="bg-gray-200 p-2 rounded-xl w-5/6 shadow-lg"
     >
      {responseUpdate ? (
       <ActivityIndicator size="large" color="#0000ff" />
      ) : (
-      <View className="border-2 border-gray-400 bg-white rounded-lg p-8 relative">
+      <View className="border-2 border-gray-400 bg-white rounded-lg p-6 relative">
        <TouchableOpacity
         onPress={() => setShowForm(false)}
         className="absolute right-3 top-3"
        >
         <Icon name="x" size={20} color="gray" />
        </TouchableOpacity>
-       <TextWrapper className="mt-6 text-xl font-IBM_boldItalic text-customBlue mb-5 text-center">
+       <TextWrapper className="mt-4 text-xl font-IBM_boldItalic text-customBlue mb-5 text-center">
         Progress Update
        </TextWrapper>
        <View className="border-b border-gray-300" />
        <View className="bg-gray-200 p-3 rounded-xl my-8">
         <TextInput
-         className="text-black font-IBM_italic"
+         className="text-black font-IBM_italic h-24"
          placeholder="Share your update..."
          placeholderTextColor="gray"
          value={text}
+         multiline={true}  
+         numberOfLines={4}  
          onChangeText={setText}
          editable={!isUploading}
+         textAlignVertical="top"
         />
        </View>
        <View className="p-3 bg-gray-200 rounded-xl mb-8">
@@ -71,12 +74,15 @@ export const PorchUpdateForm: FC<PorchFormProps> = ({
           !isValidHttpUrl(source) && source.length > 0
            ? "bg-red-100"
            : "bg-gray"
-         } rounded-md font-IBM_italic`}
+         } rounded-md font-IBM_italic h-12`}
          value={source}
          placeholder="Share your learning source..."
          placeholderTextColor="gray"
+         multiline={true}   
+         numberOfLines={4} 
          onChangeText={setSource}
          editable={!isUploading}
+         textAlignVertical="top"
         />
        </View>
        <View className="items-center">

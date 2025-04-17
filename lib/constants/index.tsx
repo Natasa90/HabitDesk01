@@ -1,4 +1,4 @@
-import { CategoryProps } from "../../types/FreeResourcesTypes";
+import { CategoryProps } from "@/types/FreeResourcesTypes";
 
 export const FreeResCategories: CategoryProps[] = [
  { name: "all" },
