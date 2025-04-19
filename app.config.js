@@ -11,6 +11,9 @@ export default {
     icon: "./assets/images/icon.png",
     userInterfaceStyle: "light",
     newArchEnabled: true,
+    plugins: [
+    "expo-secure-store"
+    ],
     splash: {
       image: "./assets/images/slavoio-logo.png", 
       resizeMode: "contain",

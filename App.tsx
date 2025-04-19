@@ -14,7 +14,7 @@ import {
  ResetPasswordScreen,
  CreateNewPasswordScreen
 } from "./screens";
-import { UserInfoContext } from "./context/UserInfoContext";
+import { UserInfoProvider } from "./context/UserInfoContext";
 import { UserContextProps } from "./types/UserTypes";
 import Footer from "./components/Footer";
 import { useFonts } from "./lib/hooks/useFonts";
@@ -63,7 +63,7 @@ export default function App() {
   }, [setUserInfo]);
 
  return (
-  <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>
+  <UserInfoProvider>
    <BackgroundWrapper>
      <NavigationContainer
           linking={{
@@ -176,6 +176,6 @@ export default function App() {
      <Footer />
     </NavigationContainer>
    </BackgroundWrapper>
-  </UserInfoContext.Provider>
+  </UserInfoProvider>
  );
 }
