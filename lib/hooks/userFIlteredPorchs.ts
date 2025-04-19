@@ -9,11 +9,8 @@ export const useFilteredPorchs = (email?: string) => {
 
   const loadUserPorchs = async () => {
     if (!email) {
-      console.log("Email is undefined. Exiting loadUserPorchs."); // Debugging
       return;
     }
-
-    console.log("Loading user porchs for email:", email); // Debugging
     setLoading(true);
 
     try {
@@ -26,7 +23,6 @@ export const useFilteredPorchs = (email?: string) => {
 
       if (error) throw new Error(error.message);
 
-      console.log("Fetched user porchs:", userPorchs); // Debugging
       setPorchs(userPorchs);
       setFiltering(true);
     } catch (err) {
