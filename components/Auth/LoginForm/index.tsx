@@ -1,19 +1,22 @@
 import { useState, FC, useContext } from "react";
 import { TextWrapper } from "@/components/Layout";
 import { View, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
-import { GithubLogin } from "@/components/Buttons/GitHubLoginButton";
 import { LoginProps } from "@/types/AuthTypes";
 import { useTypedNavigation } from "@/lib/hooks";
 import { UserInfoContext } from "@/context/UserInfoContext";
 import { AccountButton } from "@/components/Buttons";
 import { FontAwesome } from "@expo/vector-icons";
 import { signInWithEmail } from "@/lib/helpers";
+import { useGithubLogin } from "@/lib/hooks/useGitHubLogin";
 import { styles } from "@/components/Layout";
 
 export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [isRequestReady, signinError, githubLoading, promptAsync] = useGithubLogin();
+
 
   const navigation = useTypedNavigation();
   const { setUserInfo } = useContext(UserInfoContext);
@@ -64,15 +67,25 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
         <TextWrapper className="text-sm text-gray-500 pb-3">Forgot Password?</TextWrapper>
       </TouchableOpacity>
 
-      {isLoading ? (
+       {isLoading || githubLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <>
+    <>
           <AccountButton onPress={handleLogin}>
             <TextWrapper className="text-white font-IBM_semibold">Log In</TextWrapper>
           </AccountButton>
-         <GithubLogin /> 
+          <AccountButton
+            onPress={() => {
+              promptAsync();
+            }}
+            disabled={!isRequestReady}
+          >
+            <TextWrapper className="text-white font-IBM_semibold">Log In with GitHub</TextWrapper>
+          </AccountButton>
         </>
+      )}
+      {signinError?.error && (
+        <TextWrapper className="text-red-500 text-center">{signinError.error}</TextWrapper>
       )}
 
       <TextWrapper className="text-center text-gray-500 my-6">Don’t have an account? </TextWrapper>

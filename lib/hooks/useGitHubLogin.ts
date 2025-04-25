@@ -1,16 +1,15 @@
-import { useContext, useEffect, useState } from "react";
-import { View } from "react-native";
-import { TextWrapper } from "@/components/Layout";
-import { AccountButton } from "../AccountButton";
+import { useContext, useState, useEffect } from "react";
 import { UserInfoContext } from "@/context/UserInfoContext";
-import { useTypedNavigation } from "@/lib/hooks";
-import { CONFIG } from "@/lib/config";
 import * as AuthSession from "expo-auth-session";
+import { CONFIG } from "@/lib/config";
+import { useTypedNavigation } from "@/lib/hooks";
+import { GithubLoginError } from "@/types/AuthTypes";
 
-export const GithubLogin = () => {
-    const navigation = useTypedNavigation();
+export const useGithubLogin = (): [boolean, GithubLoginError, boolean, () => void] => {
     const { setUserInfo } = useContext(UserInfoContext);
+    const navigation = useTypedNavigation();
     const [signinError, setSigninError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false); 
 
     const redirectUri = AuthSession.makeRedirectUri({
         scheme: "habitdesk",
@@ -37,6 +36,7 @@ export const GithubLogin = () => {
     }, [response]);
 
     const exchangeCodeForToken = async (code: string) => {
+        setLoading(true);
         try {
             const tokenRes = await fetch(
                 "https://github.com/login/oauth/access_token",
@@ -85,26 +85,10 @@ export const GithubLogin = () => {
         } catch (error) {
             console.error("GitHub OAuth error", error);
             setSigninError("Something went wrong during login.");
+        } finally {
+            setLoading(false); 
         }
     };
 
-    return (
-        <View className="items-center space-y-4">
-            <AccountButton
-                onPress={() => {
-                    console.log("promptAsync triggered");
-                    promptAsync();
-                }}
-                disabled={!request}>
-                <TextWrapper className="text-white font-IBM_semibold">
-                  Login with GitHub
-                </TextWrapper>
-            </AccountButton>
-            {signinError && (
-                <TextWrapper className="text-red-500">
-                    {signinError}
-                </TextWrapper>
-            )}
-        </View>
-    );
+    return [!!request, { error: signinError }, loading, promptAsync]; 
 };

@@ -27,3 +27,7 @@ export interface CustomCheckboxProps {
   checked: boolean;
   onToggle: () => void;
 }
+
+export interface GithubLoginError {
+  error: string | null;
+}
