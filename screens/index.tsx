@@ -7,6 +7,7 @@ import { ResetPasswordScreen } from "./resetPassword";
 import { CreateNewPasswordScreen } from "./createNewPassword";
 import { SplashScreen } from "./splashScreen";
 import { UserProfileScreen } from "./userProfile";
+import { ScheduleLearningScreen } from "./scheduleLearning";
 
 export {
  CreateAccountScreen,
@@ -18,4 +19,5 @@ export {
  CreateNewPasswordScreen,
  SplashScreen,
  UserProfileScreen,
+ ScheduleLearningScreen
 };

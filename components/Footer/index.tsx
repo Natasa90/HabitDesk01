@@ -6,7 +6,7 @@ const Footer = () => {
 const currentYear = new Date().getFullYear(); 
 
  return (
-  <View className="flex-row w-full items-center justify-center space-x-4 bg-footerBlue py-4 border-t border-gray-300">
+  <View className="flex-row w-full items-center justify-center space-x-4 bg-customBlue2 pt-4 border-t border-gray-300">
    <Image
     source={require("../../assets/images/habitdesk.png")}
     className="w-[100px] h-[60px]"

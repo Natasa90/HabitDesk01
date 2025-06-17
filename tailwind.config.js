@@ -15,7 +15,7 @@ module.exports = {
     extend: {
       colors: {
         customBlue: "rgb(6, 140, 180)",
-        footerBlue: "rgb(246, 250, 251)",
+        customBlue2: "rgb(246, 250, 251)",
         lionBlue: "rgb(11, 66, 107)",
         transparent: 'transparent',
         listBlue: "rgb(232, 241, 255)",

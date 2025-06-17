@@ -4,17 +4,19 @@ import {
  UserProfileTitle,
  ToDoList,
  UserProfileButtons,
-UserWeeklyGoals
+ UserWeeklyGoals,
+ ScheduleLearningButton
 } from "@/components/userProfileElements";
 
 
 export const UserProfileScreen = () => {
 
  return (
-  <ScrollView className="flex-1 mt-10 px-5">
+  <ScrollView className="flex-1 mt-4 px-5">
    <FormTitle />
    <UserProfileTitle />
    <UserWeeklyGoals />
+	 <ScheduleLearningButton />
    <ToDoList />
    <UserProfileButtons />
   </ScrollView>

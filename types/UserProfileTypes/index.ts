@@ -8,3 +8,9 @@ export interface DropDownPickerProps {
   onValueChange: (value: number) => void;
   options: number[]
 }
+
+export interface DateTimePickerModalProps {
+  visible: boolean;
+  onClose: () => void;
+  onConfirm: (date: Date) => void;
+};
