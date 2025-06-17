@@ -7,4 +7,5 @@ export type RootStackParamList = {
     CreateAccount: undefined;
     ResetPassword: undefined;
     CreateNewPassword: undefined;
+		ScheduleLearning: undefined;
 };

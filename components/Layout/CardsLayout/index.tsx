@@ -26,7 +26,7 @@ export const CardLayout: FC<CardLayoutProps> = ({
    style={styles.cardLayout}
   >
    <GradientText text={title} />
-   <View className="border-4 border-gray-200 rounded-xl bg-gray-200">
+   <View className="border-4 border-gray-200 rounded-xl bg-gray-200 p-2">
     {porch.email && (
      <TouchableOpacity onPress={() => Linking.openURL(`mailto:${porch.email}`)}>
       <TextWrapper className="pl-2 text-sm font-medium">

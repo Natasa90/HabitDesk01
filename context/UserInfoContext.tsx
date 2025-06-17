@@ -26,7 +26,7 @@ export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
 
           if (!error && data.session?.user) {
             setUserInfoState({
-              email: data.session.user.email || "",
+              email: data.session.user.email || "",  
             });
           }
         }

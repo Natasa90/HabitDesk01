@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { Linking } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,7 +13,8 @@ import {
  FreeResourcesScreen,
  CreateAccountScreen,
  ResetPasswordScreen,
- CreateNewPasswordScreen
+ CreateNewPasswordScreen,
+ ScheduleLearningScreen
 } from "./screens";
 import { UserInfoProvider } from "./context/UserInfoContext";
 import { UserContextProps } from "./types/UserTypes";
@@ -21,6 +23,7 @@ import { useFonts } from "./lib/hooks/useFonts";
 import supabase from "./lib/supabase";
 import { DeepLinkingHandler } from "./components/navigation/DeepLinkingHandler";
 import { BackgroundWrapper } from "./components/Layout/BackgroundWrapper";
+import { setupLocalNotificationsAsync, setNotificationCategories } from "./lib/helpers/notifications";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +32,17 @@ export default function App() {
  const [userInfo, setUserInfo] = useState<UserContextProps["userInfo"]>(null);
 
  const fonts = useFonts();
+
+ useEffect(() => {
+  (async () => {
+    try {
+      await setupLocalNotificationsAsync();
+      await setNotificationCategories(); 
+    } catch (e) {
+      console.warn(e);
+    }
+  })();
+}, []);
 
  useEffect(() => {
     const handleDeepLink = async (url: string) => {
@@ -64,7 +78,8 @@ export default function App() {
 
  return (
   <UserInfoProvider>
-   <BackgroundWrapper>
+		<SafeAreaView className="flex-1 bg-customBlue2">
+   	<BackgroundWrapper>
      <NavigationContainer
           linking={{
             prefixes: ['habitdesk://'],
@@ -78,6 +93,7 @@ export default function App() {
                 CreateAccount: 'create-account',
                 ResetPassword: 'reset-password',
                 CreateNewPassword: 'create-new-password',
+								ScheduleLearning: 'schedule-learning',
               },
             },
           }}
@@ -141,6 +157,16 @@ export default function App() {
         headerTitle: "",
        }}
       />
+			<Stack.Screen
+			 name="ScheduleLearning"
+			 component={ScheduleLearningScreen}
+			 options={{
+        headerStyle: {
+         backgroundColor: "#f8f8f8",
+        },
+        headerTitle: "",
+       }}
+			/>
       <Stack.Screen
        name="CreateAccount"
        component={CreateAccountScreen}
@@ -176,6 +202,7 @@ export default function App() {
      <Footer />
     </NavigationContainer>
    </BackgroundWrapper>
+	 </SafeAreaView>
   </UserInfoProvider>
  );
 }

@@ -1,6 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
-
-export interface UserInfo {
+export interface UserInfo { 
     email?: string;
     token?: string;
 }
