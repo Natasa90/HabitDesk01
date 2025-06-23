@@ -1,15 +1,50 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { View } from "react-native";
 import { TextWrapper } from "@/components/Layout";
-import { ReminderProps } from "@/types/NotificationTypes";
 import { ScheduleLearningListProps } from "@/types/NotificationTypes";
+import { useDeleteReminder, useUpdateReminder } from "@/lib/hooks";
+import { DateTimeSelector } from "../DateTimeSelector";
 
 
 export const ScheduleLearningList: FC<ScheduleLearningListProps> = ({
   reminders,
   loading,
   error,
+	refresh
 }) => {
+	const { deleteReminder, deleting } = useDeleteReminder(refresh);
+  const { updateReminder, updating } = useUpdateReminder(refresh);
+
+	const [pickerVisible, setPickerVisible] = useState(false);
+	const [editingReminderId, setEditingReminderId] = useState<number | null>(null);
+	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
+
+
+	const handleDelete = async (id: number) => {
+    await deleteReminder(id);
+  };
+
+  const handleUpdate = (id: number, date: Date) => {
+		setEditingReminderId(id);
+		setSelectedDate(date);
+		setPickerVisible(true);
+	};
+	
+	const handleDateConfirm = async (date: Date) => {
+		if (editingReminderId !== null) {
+			await updateReminder(editingReminderId, date);
+			setEditingReminderId(null);
+			setPickerVisible(false);
+		}
+	};
+	
+	const handlePickerClose = () => {
+		setEditingReminderId(null);
+		setPickerVisible(false);
+	};
+	
+
   if (loading) {
     return (
       <View className="py-6">
@@ -60,8 +95,31 @@ export const ScheduleLearningList: FC<ScheduleLearningListProps> = ({
               hour12: true,
             })}
           </TextWrapper>
+					<View className="flex-row justify-center mt-3 space-x-4">
+            <TextWrapper
+              className="text-red-500 font-bold"
+              onPress={() => handleDelete(item.id)}
+            >
+              {deleting ? "Deleting..." : "Delete"}
+            </TextWrapper>
+
+            <TextWrapper
+              className="text-blue-500 font-bold"
+              onPress={() => handleUpdate(item.id, new Date(item.learning_date))}
+            >
+              {updating ? "Updating..." : "Edit Time"}
+            </TextWrapper>
+          </View>
         </View>
       ))}
+			{pickerVisible && (
+  			<DateTimeSelector
+    			visible={pickerVisible}
+    			initialDate={selectedDate}
+    			onConfirm={handleDateConfirm}
+    			onClose={handlePickerClose}
+  			/>
+			)}
     </View>
   );
 };

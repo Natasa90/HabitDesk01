@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import {
   ScheduleLearningTitle,
   LearningTimePicker,
@@ -17,6 +17,7 @@ export const ScheduleLearningScreen = () => {
         reminders={reminders}
         loading={loading}
         error={error}
+				refresh={refresh}
       />
     </ScrollView>
   );
