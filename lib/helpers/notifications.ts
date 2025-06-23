@@ -69,8 +69,8 @@ export const scheduleLocalNotification = async ({
   body: string;
   data?: any;
   date: Date;
-}) => {
-  await Notifications.scheduleNotificationAsync({
+}): Promise<string> => {
+  const notificationId = await Notifications.scheduleNotificationAsync({
     content: {
       title,
       body,
@@ -78,9 +78,10 @@ export const scheduleLocalNotification = async ({
       sound: 'default',
       categoryIdentifier: 'learn-reminder',
     },
-		trigger: {
+    trigger: {
       type: SchedulableTriggerInputTypes.DATE,
-   		date,
+      date,
     },
   });
+  return notificationId; 
 };

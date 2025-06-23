@@ -2,15 +2,15 @@ import { useEffect, useState, useContext } from 'react';
 import { UserInfoContext } from '@/context/UserInfoContext';
 import { ReminderProps } from '@/types/NotificationTypes';
 import supabase from '@/lib/supabase';
+import { useRefreshTrigger } from './useRefreshTrigger';
 
 export const useReminders = () => {
   const { userInfo } = useContext(UserInfoContext);
   const [reminders, setReminders] = useState<ReminderProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-  const refresh = () => setRefreshTrigger((prev) => prev + 1);
+	
+	const { refreshTrigger, refresh } = useRefreshTrigger(); 
 
   useEffect(() => {
     const fetchReminders = async () => {

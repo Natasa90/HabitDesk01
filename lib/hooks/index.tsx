@@ -13,7 +13,9 @@ import { useFetchTasks } from "./useFetchTasks";
 import { useDeleteTask } from "./useDeleteTask";
 import { useAddTask } from "./useAddTask";
 import { useReminders } from "./useReminders";
-
+import { useDeleteReminder } from "./useDeleteReminder";
+import { useUpdateReminder } from "./useUpdateReminders";
+import { useRefreshTrigger } from "./useRefreshTrigger";
 export {
  useFetchSources,
  useFonts,
@@ -29,5 +31,8 @@ usePorchForm,
 useAddTask,
 useDeleteTask,
 useFetchTasks,
-useReminders
+useReminders,
+useDeleteReminder,
+useUpdateReminder,
+useRefreshTrigger
 };
