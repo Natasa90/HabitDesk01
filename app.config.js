@@ -6,7 +6,7 @@ export default {
   expo: {
     name: "habitdesk",
     slug: "habitdesk",
-    version: "1.0.2",
+    version: "1.0.3",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     userInterfaceStyle: "light",
@@ -22,7 +22,7 @@ export default {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.anonymous.habitdesk",  
-      buildNumber: "16",  
+      buildNumber: "17",  
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
         "aps-environment": "production",
