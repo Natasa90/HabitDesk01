@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { FC, useState, useContext } from 'react';
 import {
   View,
   Alert,
@@ -11,15 +11,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { UserInfoContext } from '@/context/UserInfoContext';
 import supabase from '@/lib/supabase';
 import { scheduleLocalNotification } from '@/lib/helpers/notifications';
+import { useReminders } from '@/lib/hooks';
+import { LearningTimePickerProps } from '@/types/NotificationTypes';
 
-export const LearningTimePicker = () => {
+export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess }) => {
   const { userInfo } = useContext(UserInfoContext);
 
   const [finalDate, setFinalDate] = useState(new Date());
   const [tempDate, setTempDate] = useState(new Date());
 	const [hasPickedDate, setHasPickedDate] = useState(false);
-
-
   const [mode, setMode] = useState<'date' | 'time'>('date');
   const [showPicker, setShowPicker] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -82,6 +82,8 @@ export const LearningTimePicker = () => {
 	
 			Alert.alert('Success', 'Learning time saved and notification scheduled!');
 
+			if (onSaveSuccess) onSaveSuccess();
+
 			const now = new Date();
 			setFinalDate(now);
 			setTempDate(now);
@@ -97,7 +99,7 @@ export const LearningTimePicker = () => {
 	};
 
 	return (
-		<View className="flex-1 px-4 pt-4">
+		<View className="flex-1 px-4 py-4">
 			<TouchableOpacity
   			onPress={openPicker}
 				className="bg-customBlue rounded-lg mb-4 self-center w-60"			>

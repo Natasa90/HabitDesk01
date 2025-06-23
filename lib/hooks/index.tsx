@@ -12,6 +12,7 @@ import { usePorchForm } from "./usePorchForm";
 import { useFetchTasks } from "./useFetchTasks";
 import { useDeleteTask } from "./useDeleteTask";
 import { useAddTask } from "./useAddTask";
+import { useReminders } from "./useReminders";
 
 export {
  useFetchSources,
@@ -27,5 +28,6 @@ export {
 usePorchForm,
 useAddTask,
 useDeleteTask,
-useFetchTasks
+useFetchTasks,
+useReminders
 };
