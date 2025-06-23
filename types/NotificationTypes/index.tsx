@@ -6,3 +6,9 @@ export interface ReminderProps {
 export interface LearningTimePickerProps {
   onSaveSuccess?: () => void;
 };
+
+export interface ScheduleLearningListProps {
+  reminders: ReminderProps[];
+  loading: boolean;
+  error: string | null;
+}
