@@ -22,7 +22,7 @@ export default {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.anonymous.habitdesk",  
-      buildNumber: "17",  
+      buildNumber: "19",  
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
         "aps-environment": "production",
