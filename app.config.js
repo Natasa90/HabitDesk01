@@ -6,7 +6,7 @@ export default {
   expo: {
     name: "habitdesk",
     slug: "habitdesk",
-    version: "1.0.3",
+    version: "1.0.4",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     userInterfaceStyle: "light",
