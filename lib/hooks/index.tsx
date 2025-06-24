@@ -16,6 +16,8 @@ import { useReminders } from "./useReminders";
 import { useDeleteReminder } from "./useDeleteReminder";
 import { useUpdateReminder } from "./useUpdateReminders";
 import { useRefreshTrigger } from "./useRefreshTrigger";
+import { useCleanOldReminders } from "./useCleanOldReminders";
+
 export {
  useFetchSources,
  useFonts,
@@ -34,5 +36,6 @@ useFetchTasks,
 useReminders,
 useDeleteReminder,
 useUpdateReminder,
-useRefreshTrigger
+useRefreshTrigger,
+useCleanOldReminders
 };

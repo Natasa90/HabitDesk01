@@ -3,7 +3,6 @@ import { signUpWithEmail } from "./authHelpers";
 import { signInWithEmail } from "./authHelpers";
 import { getRemainingDaysInWeek } from "./getRemainingDaysOfWeek";
 import { fetchTasks, addTask, deleteTask } from "./tasksHelpers";
-import { registerForPushNotificationsAsync, sendPushNotification } from "./notifications";
 
 export {
  handlePasswordReset,
@@ -12,7 +11,5 @@ export {
  getRemainingDaysInWeek,
  fetchTasks,
  addTask,
- deleteTask,
- registerForPushNotificationsAsync,
- sendPushNotification
+ deleteTask
 };
