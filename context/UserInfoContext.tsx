@@ -1,8 +1,6 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import * as SecureStore from "expo-secure-store";
 import { UserContextProps, UserInfo } from "@/types/UserTypes";
 import supabase from "@/lib/supabase";
-import { Session } from "@supabase/supabase-js";
 
 export const UserInfoContext = createContext<UserContextProps>({
   userInfo: null,
@@ -13,52 +11,28 @@ export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
   const [userInfo, setUserInfoState] = useState<UserInfo | null>(null);
 
   useEffect(() => {
-    const restoreSession = async () => {
-      try {
-        const storedSession = await SecureStore.getItemAsync("supabaseSession");
-        if (storedSession) {
-          const session: Session = JSON.parse(storedSession);
+    const restoreUser = async () => {
+			const { data } = await supabase.auth.getSession();
 
-          const { data, error } = await supabase.auth.setSession({
-            access_token: session.access_token,
-            refresh_token: session.refresh_token,
-          });
+			const email = data.session?.user?.email;
+			if (email) {
+				setUserInfoState({ email }); 
+			}
+		};
 
-          if (!error && data.session?.user) {
-            setUserInfoState({
-              email: data.session.user.email || "",  
-            });
-          }
-        }
-      } catch (error) {
-        console.error("Error restoring session:", error);
-      }
-    };
-
-    restoreSession();
+		restoreUser(); 
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
-        if (session) {
-          await SecureStore.setItemAsync("supabaseSession", JSON.stringify({
-            access_token: session.access_token,
-            refresh_token: session.refresh_token,
-          }));
-
-          setUserInfoState({
-            email: session.user.email || "",
-          });
-        } else {
-          await SecureStore.deleteItemAsync("supabaseSession");
-          setUserInfoState(null);
-        }
-      }
-    );
+       const email = session?.user?.email; 
+			 setUserInfoState(email ? { email } : null); 
+			}
+		);
 
     return () => {
       authListener?.subscription.unsubscribe();
     };
-  }, []);
+	}, []);
 
   const setUserInfo = async (info: UserInfo | null) => {
     setUserInfoState(info);
