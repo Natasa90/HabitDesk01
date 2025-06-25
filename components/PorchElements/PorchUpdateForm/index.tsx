@@ -7,7 +7,7 @@ import {
  TouchableOpacity,
  ActivityIndicator,
  TouchableWithoutFeedback,
- Keyboard,g
+ Keyboard,
 } from "react-native";
 import { PorchFormProps } from "@/types/PorchTypes";
 import Icon from "react-native-vector-icons/Feather";
