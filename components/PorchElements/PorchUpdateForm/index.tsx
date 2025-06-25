@@ -1,10 +1,13 @@
 import { FC } from "react";
 import {
  View,
+ ScrollView,
  TextInput,
  Modal,
  TouchableOpacity,
  ActivityIndicator,
+ TouchableWithoutFeedback,
+ Keyboard,g
 } from "react-native";
 import { PorchFormProps } from "@/types/PorchTypes";
 import Icon from "react-native-vector-icons/Feather";
@@ -32,7 +35,11 @@ export const PorchUpdateForm: FC<PorchFormProps> = ({
    transparent={true}
    onRequestClose={() => setShowForm(false)}
   >
-   <View className="flex-1 items-center justify-center bg-opacity-70">
+	  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+   	<ScrollView
+			contentContainerStyle={{ flexGrow: 1, alignItems: "center", justifyContent: "center" }}
+			keyboardShouldPersistTaps="handled"
+		>
     <BlurView
      style={styles.updateModalBLur}
      intensity={30}
@@ -99,7 +106,8 @@ export const PorchUpdateForm: FC<PorchFormProps> = ({
       </View>
      )}
     </View>
-   </View>
+   </ScrollView>
+	 </TouchableWithoutFeedback>
   </Modal>
  );
 };

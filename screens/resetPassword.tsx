@@ -1,3 +1,4 @@
+import { ScrollView, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from 'react-native'; 
 import { ResetPasswordForm } from "@/components/Auth";
 import { useTypedNavigation } from "@/lib/hooks";
 
@@ -9,6 +10,16 @@ export const ResetPasswordScreen = () => {
  };
 
  return (
-   <ResetPasswordForm resetPassword={handleCancelReset} />
+	<KeyboardAvoidingView
+		style={{ flex: 1 }}
+		behavior={Platform.OS === "ios" ? "padding" : "height"}
+	>
+		<ScrollView
+			contentContainerStyle={{ flexGrow: 1 }}
+			keyboardShouldPersistTaps="handled"
+		>
+   		<ResetPasswordForm resetPassword={handleCancelReset} />
+		</ScrollView>
+	</KeyboardAvoidingView>
  );
 };
