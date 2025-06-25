@@ -1,3 +1,4 @@
+import { ScrollView, Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback } from "react-native";
 import { LoginForm, FormTitle } from "@/components/Auth";
 import { useTypedNavigation } from "@/lib/hooks";
 
@@ -14,9 +15,20 @@ export const LoginScreen = () => {
  };
 
  return (
-  <>
-   <FormTitle />
-   <LoginForm signUp={handleSignUp} resetPassword={handleResetPassword} />
-  </>
- );
+	<KeyboardAvoidingView
+		style={{ flex: 1 }}
+		behavior={Platform.OS === "ios" ? "padding" : "height"}
+	>
+			<ScrollView
+				contentContainerStyle={{ flexGrow: 1 }}
+				keyboardShouldPersistTaps="handled"
+			>
+				<FormTitle />
+				<LoginForm
+					signUp={handleSignUp}
+					resetPassword={handleResetPassword}
+				/>
+			</ScrollView>
+	</KeyboardAvoidingView>
+);
 };
