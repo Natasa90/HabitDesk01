@@ -1,4 +1,5 @@
 import { Alert } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import supabase from "../supabase";
 import { NavigationProp } from "@react-navigation/native";
 import { isValidEmail } from "../constants";
@@ -119,11 +120,14 @@ export const signInWithEmail = async (
    const user = data?.user;
    const session = data?.session;
 
-   if (user) {
+   if (user && session) {
+		await AsyncStorage.setItem('userToken', session.access_token);
+		await AsyncStorage.setItem('userEmail', user.email || '');
+
     setUserInfo({ email: user.email });
     return true;
    } else {
-    console.log("No user data found.");
+    console.log("No user or session data found.");
    }
   }
  } catch (error) {

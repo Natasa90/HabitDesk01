@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserInfoContext } from "@/context/UserInfoContext";
 import * as AuthSession from "expo-auth-session";
 import { CONFIG } from "@/lib/config";
@@ -79,6 +80,9 @@ export const useGithubLogin = (): [boolean, GithubLoginError, boolean, () => voi
                 (email: any) => email.primary && email.verified
             )?.email;
 
+						await AsyncStorage.setItem('userToken', accessToken);
+						await AsyncStorage.setItem('userEmail', primaryEmail || user.email);
+						
             setUserInfo({ email: primaryEmail || user.email });
 
             navigation.navigate("UserProfile");

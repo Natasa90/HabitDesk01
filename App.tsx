@@ -24,6 +24,7 @@ import supabase from "./lib/supabase";
 import { DeepLinkingHandler } from "./components/navigation/DeepLinkingHandler";
 import { BackgroundWrapper } from "./components/Layout/BackgroundWrapper";
 import { setupLocalNotificationsAsync, setNotificationCategories } from "./lib/helpers/notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createNativeStackNavigator();
 
@@ -75,6 +76,15 @@ export default function App() {
       Linking.removeAllListeners("url");
     };
   }, [setUserInfo]);
+
+	useEffect(() => {
+		const checkStorage = async () => {
+			const keys = await AsyncStorage.getAllKeys();
+			const values = await AsyncStorage.multiGet(keys);
+			console.log("📦 AsyncStorage contents:", values);
+		};
+		checkStorage();
+	}, []);
 
  return (
   <UserInfoProvider>
