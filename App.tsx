@@ -135,6 +135,7 @@ export default function App() {
        component={UserProfileScreen}
        options={{
         headerShown: false,
+				title: 'My Profile',
        }}
       />
       <Stack.Screen
