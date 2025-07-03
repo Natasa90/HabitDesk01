@@ -9,9 +9,9 @@ import {
 import { TextWrapper } from '@/components/Layout';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { UserInfoContext } from '@/context/UserInfoContext';
-import supabase from '@/lib/supabase';
-import { scheduleLocalNotification } from '@/lib/helpers/notifications';
 import { LearningTimePickerProps } from '@/types/NotificationTypes';
+import { getIsFinalDateInPastOrNow } from '@/lib/helpers';
+import { useSaveLearningTime } from '@/lib/hooks';
 
 export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess }) => {
   const { userInfo } = useContext(UserInfoContext);
@@ -21,17 +21,22 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
   const [hasPickedDate, setHasPickedDate] = useState(false);
   const [mode, setMode] = useState<'date' | 'time'>('date');
   const [showPicker, setShowPicker] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
-	//create helper func for this and move it 
-  const isFinalDateInPastOrNow = (date: Date) => {
+  const resetDates = () => {
     const now = new Date();
-    const trimmedNow = new Date(now);
-    trimmedNow.setSeconds(0, 0);
-    const trimmedDate = new Date(date);
-    trimmedDate.setSeconds(0, 0);
-    return trimmedDate.getTime() <= trimmedNow.getTime();
+    setFinalDate(now);
+    setTempDate(now);
+    setHasPickedDate(false);
   };
+
+	const { saveLearningTime, isSaving } = useSaveLearningTime({
+    finalDate,
+    userEmail: userInfo?.email,
+    onSaveSuccess,
+    resetDates,
+    setHasPickedDate,
+  });
+
 
   const openPicker = () => {
     setTempDate(finalDate);
@@ -49,7 +54,7 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
     if (mode === 'date') {
       setMode('time');
     } else {
-      if (isFinalDateInPastOrNow(tempDate)) {
+      if (getIsFinalDateInPastOrNow(tempDate)) {
         Alert.alert(
           'Oops!',
           "Please pick another time — you can't schedule a reminder for the past or this exact minute ⏰"
@@ -65,52 +70,6 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
   const onCancel = () => {
     setShowPicker(false);
   };
-
-	const saveLearningTime = async () => {
-		setIsSaving(true);
-	
-		const truncatedDate = new Date(finalDate);
-		truncatedDate.setSeconds(0, 0);
-	
-		try {
-			const notificationId = await scheduleLocalNotification({
-				title: 'Time to Learn! 📚',
-				body: 'Remember to keep up with your learning goals today!',
-				date: truncatedDate,
-				data: { userEmail: userInfo?.email },
-			});
-	
-			const { data, error } = await supabase.from('learning_times').insert([
-				{
-					user_email: userInfo?.email,
-					learning_date: finalDate.toISOString(),
-					notification_id: notificationId, 
-				},
-			]);
-	
-			if (error) {
-				Alert.alert('Error', 'Failed to save learning time. Try again.');
-				console.error('Save error:', error);
-				setIsSaving(false);
-				return;
-			}
-	
-			Alert.alert('Success', 'Learning time saved and notification scheduled!');
-	
-			if (onSaveSuccess) onSaveSuccess();
-	
-			const now = new Date();
-			setFinalDate(now);
-			setTempDate(now);
-			setHasPickedDate(false);
-		} catch (notifyError) {
-			Alert.alert('Saved but failed to schedule notification 😞');
-			console.error('Notification error:', notifyError);
-		} finally {
-			setIsSaving(false);
-		}
-	};
-	
 
   return (
     <View className="flex-1 px-4 py-4">
@@ -140,9 +99,9 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
           </TextWrapper>
           <TouchableOpacity
             onPress={saveLearningTime}
-            disabled={isSaving || isFinalDateInPastOrNow(finalDate)}
+            disabled={isSaving || getIsFinalDateInPastOrNow(finalDate)}
             className={`rounded-lg py-3 px-6 mt-4 self-center w-60 ${
-              isSaving || isFinalDateInPastOrNow(finalDate) ? 'bg-gray-300' : 'bg-green-600'
+              isSaving || getIsFinalDateInPastOrNow(finalDate) ? 'bg-gray-300' : 'bg-green-600'
             }`}
           >
             <TextWrapper className="text-white text-center text-lg font-semibold text-base">

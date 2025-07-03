@@ -7,13 +7,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TextWrapper } from '@/components/Layout';
-
-type DateTimeSelectorProps = {
-  visible: boolean;
-  initialDate: Date;
-  onClose: () => void;
-  onConfirm: (selectedDate: Date) => void;
-};
+import { DateTimeSelectorProps } from '@/types/NotificationTypes';
 
 export const DateTimeSelector: FC<DateTimeSelectorProps> = ({
   visible,

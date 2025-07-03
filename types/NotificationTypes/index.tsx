@@ -13,3 +13,18 @@ export interface ScheduleLearningListProps {
   error: string | null;
 	refresh: () => void;
 }
+
+export interface DateTimeSelectorProps {
+  visible: boolean;
+  initialDate: Date;
+  onClose: () => void;
+  onConfirm: (selectedDate: Date) => void;
+};
+
+export interface UseSaveLearningTimeParams {
+  finalDate: Date;
+  userEmail?: string;
+  onSaveSuccess?: () => void;
+  resetDates: () => void;
+  setHasPickedDate: (value: boolean) => void;
+}
