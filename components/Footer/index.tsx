@@ -16,7 +16,7 @@ const currentYear = new Date().getFullYear();
    <TextWrapper className="text-xs text-left">
     © {currentYear} All rights reserved.{"\n"}
     Designed by{" "}
-    <TextWrapper className="font-IBM_bold">Prototype.NEXT</TextWrapper>
+    <TextWrapper className="font-IBM_bold">Prototype.NEXT</TextWrapper >
    </TextWrapper>
   </View>
  );
