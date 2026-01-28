@@ -137,5 +137,27 @@ export const signInWithEmail = async (
  return false;
 };
 
+export const logoutUser = async (
+  setUserInfo: (val: any) => void,
+  navigation: any,
+  setLoading: (val: boolean) => void
+) => {
+  try {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+
+    setUserInfo(null);
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Home" }],
+    });
+  } catch (error) {
+    Alert.alert("Logout Error", "Something went wrong during logout.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 

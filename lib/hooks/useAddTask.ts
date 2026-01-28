@@ -30,7 +30,7 @@ export const useAddTask = (toDo: string[], setToDo: React.Dispatch<React.SetStat
         setInput("")
       }
     } else {
-      setError("Please Write a Task to Add.");
+      setError("Please write a Task to add.");
     }
   };
 

@@ -5,11 +5,11 @@ import { UserInfoContext } from "@/context/UserInfoContext";
 import {
  UserProfileTitle,
  ToDoList,
- UserProfileButtons,
  UserWeeklyGoals,
- ScheduleLearningButton
 } from "@/components/userProfileElements";
+import { UserProfileButton, LogoutButton } from "@/components/Buttons";
 import { useCleanOldReminders } from "@/lib/hooks";
+import { FontAwesome } from "@expo/vector-icons";
 
 export const UserProfileScreen = () => {
 	const { userInfo } = useContext(UserInfoContext);
@@ -25,9 +25,11 @@ export const UserProfileScreen = () => {
    <FormTitle />
    <UserProfileTitle />
    <UserWeeklyGoals />
-	 <ScheduleLearningButton />
+	 <UserProfileButton label="Learning Reminder" navigateTo="ScheduleLearning" icon={<FontAwesome name="play" size={16} color="red" />} />
    <ToDoList />
-   <UserProfileButtons />
+   <UserProfileButton label="Go to Porch Screen" navigateTo="Porch" icon={<FontAwesome name="play" size={16} color="red" />} />
+	 <UserProfileButton label="Go to Free Resources" navigateTo="FreeResources" icon={<FontAwesome name="play" size={16} color="red" />} />
+	 <LogoutButton />
   </ScrollView>
  );
 };

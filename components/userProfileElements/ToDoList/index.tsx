@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { View, TextInput, TouchableOpacity, Image } from "react-native";
+import { View, TextInput, TouchableOpacity, Image, Keyboard } from "react-native";
+import { Feather } from '@expo/vector-icons';
 import { TextWrapper } from "@/components/Layout";
 import { useFetchTasks, useAddTask, useDeleteTask } from "@/lib/hooks";
 
@@ -38,7 +39,7 @@ export const ToDoList = () => {
      onPress={() => addTask(input)}
      className="p-3 bg-blue-500 rounded-lg flex justify-center items-center"
     >
-     <TextWrapper className="text-white font-semibold">Add</TextWrapper>
+     <Feather name="plus" size={20} color="white" />
     </TouchableOpacity>
    </View>
    <View className="mt-6 w-full max-w-md">
@@ -49,12 +50,12 @@ export const ToDoList = () => {
      >
       <TextWrapper className="text-gray-800">{item}</TextWrapper>
       <TouchableOpacity onPress={() => deleteTask(item)}>
-       <TextWrapper className="text-red-500 font-semibold">x</TextWrapper>
+				<Feather name="trash-2" size={25} className="text-red-500" />
       </TouchableOpacity>
      </View>
     ))}
     {(fetchError || addError) && (
-          <TextWrapper className="text-center text-orange-300">
+          <TextWrapper className="text-lg text-center text-red-500">
             {fetchError || addError}
           </TextWrapper>
         )}
