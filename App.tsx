@@ -5,16 +5,17 @@ import { Linking } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
- SplashScreen,
- HomeScreen,
- LoginScreen,
- UserProfileScreen,
- PorchScreen,
- FreeResourcesScreen,
- CreateAccountScreen,
- ResetPasswordScreen,
- CreateNewPasswordScreen,
- ScheduleLearningScreen
+  SplashScreen,
+  HomeScreen,
+  LoginScreen,
+  UserProfileScreen,
+  PorchScreen,
+  FreeResourcesScreen,
+  CreateAccountScreen,
+  ResetPasswordScreen,
+  CreateNewPasswordScreen,
+  ScheduleLearningScreen,
+  ContactScreen,
 } from "./screens";
 import { UserInfoProvider } from "./context/UserInfoContext";
 import { UserContextProps } from "./types/UserTypes";
@@ -23,29 +24,32 @@ import { useFonts } from "./lib/hooks/useFonts";
 import supabase from "./lib/supabase";
 import { DeepLinkingHandler } from "./components/navigation/DeepLinkingHandler";
 import { BackgroundWrapper } from "./components/Layout/BackgroundWrapper";
-import { setupLocalNotificationsAsync, setNotificationCategories } from "./lib/helpers/notifications";
+import {
+  setupLocalNotificationsAsync,
+  setNotificationCategories,
+} from "./lib/helpers/notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
- const [initialRoute, setInitialRoute] = useState("Splash"); 
- const [userInfo, setUserInfo] = useState<UserContextProps["userInfo"]>(null);
+  const [initialRoute, setInitialRoute] = useState("Splash");
+  const [userInfo, setUserInfo] = useState<UserContextProps["userInfo"]>(null);
 
- const fonts = useFonts();
+  const fonts = useFonts();
 
- useEffect(() => {
-  (async () => {
-    try {
-      await setupLocalNotificationsAsync();
-      await setNotificationCategories(); 
-    } catch (e) {
-      console.warn(e);
-    }
-  })();
-}, []);
+  useEffect(() => {
+    (async () => {
+      try {
+        await setupLocalNotificationsAsync();
+        await setNotificationCategories();
+      } catch (e) {
+        console.warn(e);
+      }
+    })();
+  }, []);
 
- useEffect(() => {
+  useEffect(() => {
     const handleDeepLink = async (url: string) => {
       const parsedUrl = new URL(url);
       const accessToken = parsedUrl.hash?.split("&")[0]?.split("=")[1];
@@ -53,8 +57,11 @@ export default function App() {
 
       if (accessToken && refreshToken) {
         try {
-          await supabase.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
-          setInitialRoute("CreateNewPassword"); 
+          await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+          setInitialRoute("CreateNewPassword");
         } catch (err) {
           console.error("Error setting session", err);
           setInitialRoute("Splash");
@@ -77,143 +84,153 @@ export default function App() {
     };
   }, [setUserInfo]);
 
-	useEffect(() => {
-		const checkStorage = async () => {
-			const keys = await AsyncStorage.getAllKeys();
-			const values = await AsyncStorage.multiGet(keys);
-			console.log("📦 AsyncStorage contents:", values);
-		};
-		checkStorage();
-	}, []);
+  useEffect(() => {
+    const checkStorage = async () => {
+      const keys = await AsyncStorage.getAllKeys();
+      const values = await AsyncStorage.multiGet(keys);
+      console.log("📦 AsyncStorage contents:", values);
+    };
+    checkStorage();
+  }, []);
 
- return (
-  <UserInfoProvider>
-		<SafeAreaView className="flex-1 bg-customBlue2">
-   	<BackgroundWrapper>
-     <NavigationContainer
-          linking={{
-            prefixes: ['habitdesk://'],
-            config: {
-              screens: {
-                Home: 'home',
-                Login: 'login',
-                UserProfile: 'profile',
-                Porch: 'porch',
-                FreeResources: 'free-resources',
-                CreateAccount: 'create-account',
-                ResetPassword: 'reset-password',
-                CreateNewPassword: 'create-new-password',
-								ScheduleLearning: 'schedule-learning',
+  return (
+    <UserInfoProvider>
+      <SafeAreaView className="flex-1 bg-customBlue2">
+        <BackgroundWrapper>
+          <NavigationContainer
+            linking={{
+              prefixes: ["habitdesk://"],
+              config: {
+                screens: {
+                  Home: "home",
+                  Login: "login",
+                  UserProfile: "profile",
+                  Porch: "porch",
+                  FreeResources: "free-resources",
+                  CreateAccount: "create-account",
+                  ResetPassword: "reset-password",
+                  CreateNewPassword: "create-new-password",
+                  ScheduleLearning: "schedule-learning",
+                },
               },
-            },
-          }}
-        >
-     <DeepLinkingHandler />
-     <Stack.Navigator
-      initialRouteName="Splash"
-      screenOptions={{
-       animation: "none",
-       contentStyle: { backgroundColor: "transparent" }, 
-      }}
-     >
-      <Stack.Screen
-       name="Splash"
-       component={SplashScreen}
-       options={{
-        headerShown: false,
-       }}
-      />
-      <Stack.Screen
-       name="Home"
-       component={HomeScreen}
-       options={{
-        headerShown: false,
-       }}
-      />
-      <Stack.Screen
-       name="Login"
-       component={LoginScreen}
-       options={{
-        headerStyle: {
-         backgroundColor: "#f8f8f8",
-        },
-        headerTitle: "",
-       }}
-      />
-      <Stack.Screen
-       name="UserProfile"
-       component={UserProfileScreen}
-       options={{
-        headerShown: false,
-				title: 'My Profile',
-       }}
-      />
-      <Stack.Screen
-       name="Porch"
-       component={PorchScreen}
-       options={{
-        headerStyle: {
-         backgroundColor: "#f8f8f8",
-        },
-        headerTitle: "",
-       }}
-      />
-      <Stack.Screen
-       name="FreeResources"
-       component={FreeResourcesScreen}
-       options={{
-        headerStyle: {
-         backgroundColor: "#f8f8f8",
-        },
-        headerTitle: "",
-       }}
-      />
-			<Stack.Screen
-			 name="ScheduleLearning"
-			 component={ScheduleLearningScreen}
-			 options={{
-        headerStyle: {
-         backgroundColor: "#f8f8f8",
-        },
-        headerTitle: "",
-       }}
-			/>
-      <Stack.Screen
-       name="CreateAccount"
-       component={CreateAccountScreen}
-       options={{
-        headerStyle: {
-         backgroundColor: "#f8f8f8",
-        },
-        headerTitle: "",
-       }}
-      />
-      <Stack.Screen
-       name="ResetPassword"
-       component={ResetPasswordScreen}
-       options={{
-        headerStyle: {
-         backgroundColor: "#f8f8f8",
-        },
-        headerTitle: "",
-       }}
-      />
-      <Stack.Screen
-       name="CreateNewPassword"
-       component={CreateNewPasswordScreen}
-       options={{
-        headerStyle: {
-         backgroundColor: "#f8f8f8",
-        },
-        headerTitle: "",
-       }}
-      />
-     </Stack.Navigator>
-     <StatusBar style="dark" />
-     <Footer />
-    </NavigationContainer>
-   </BackgroundWrapper>
-	 </SafeAreaView>
-  </UserInfoProvider>
- );
+            }}
+          >
+            <DeepLinkingHandler />
+            <Stack.Navigator
+              initialRouteName="Splash"
+              screenOptions={{
+                animation: "none",
+                contentStyle: { backgroundColor: "transparent" },
+              }}
+            >
+              <Stack.Screen
+                name="Splash"
+                component={SplashScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#f8f8f8",
+                  },
+                  headerTitle: "",
+                }}
+              />
+              <Stack.Screen
+                name="UserProfile"
+                component={UserProfileScreen}
+                options={{
+                  headerShown: false,
+                  title: "My Profile",
+                }}
+              />
+              <Stack.Screen
+                name="Porch"
+                component={PorchScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#f8f8f8",
+                  },
+                  headerTitle: "",
+                }}
+              />
+              <Stack.Screen
+                name="FreeResources"
+                component={FreeResourcesScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#f8f8f8",
+                  },
+                  headerTitle: "",
+                }}
+              />
+              <Stack.Screen
+                name="ScheduleLearning"
+                component={ScheduleLearningScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#f8f8f8",
+                  },
+                  headerTitle: "",
+                }}
+              />
+              <Stack.Screen
+                name="CreateAccount"
+                component={CreateAccountScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#f8f8f8",
+                  },
+                  headerTitle: "",
+                }}
+              />
+              <Stack.Screen
+                name="ResetPassword"
+                component={ResetPasswordScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#f8f8f8",
+                  },
+                  headerTitle: "",
+                }}
+              />
+              <Stack.Screen
+                name="CreateNewPassword"
+                component={CreateNewPasswordScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#f8f8f8",
+                  },
+                  headerTitle: "",
+                }}
+              />
+              <Stack.Screen
+                name="Contact"
+                component={ContactScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: "#f8f8f8",
+                  },
+                  headerTitle: "",
+                }}
+              />
+            </Stack.Navigator>
+            <StatusBar style="dark" />
+            <Footer />
+          </NavigationContainer>
+        </BackgroundWrapper>
+      </SafeAreaView>
+    </UserInfoProvider>
+  );
 }

@@ -8,16 +8,18 @@ import { CreateNewPasswordScreen } from "./createNewPassword";
 import { SplashScreen } from "./splashScreen";
 import { UserProfileScreen } from "./userProfile";
 import { ScheduleLearningScreen } from "./scheduleLearning";
+import { ContactScreen } from "./contact";
 
 export {
- CreateAccountScreen,
- FreeResourcesScreen,
- HomeScreen,
- LoginScreen,
- PorchScreen,
- ResetPasswordScreen,
- CreateNewPasswordScreen,
- SplashScreen,
- UserProfileScreen,
- ScheduleLearningScreen
+  CreateAccountScreen,
+  FreeResourcesScreen,
+  HomeScreen,
+  LoginScreen,
+  PorchScreen,
+  ResetPasswordScreen,
+  CreateNewPasswordScreen,
+  SplashScreen,
+  UserProfileScreen,
+  ScheduleLearningScreen,
+  ContactScreen,
 };
