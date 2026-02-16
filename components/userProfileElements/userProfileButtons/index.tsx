@@ -26,7 +26,7 @@ export const UserProfileButtons = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("FreeResources")}
-        className="bg-gray-300 p-6 rounded-xl flex-row justify-center items-center mb-6"
+        className="bg-gray-300 p-6 rounded-xl flex-row justify-center items-center"
       >
         <TextWrapper className="text-lg text-gray-900">
           Go to Free Resources
@@ -40,7 +40,7 @@ export const UserProfileButtons = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("Contact")}
-        className="bg-gray-300 p-6 rounded-xl flex-row justify-center items-center mb-6"
+        className="bg-gray-300 p-6 rounded-xl flex-row justify-center items-center"
       >
         <TextWrapper className="text-lg text-gray-900">
           Go to Contact
@@ -52,8 +52,9 @@ export const UserProfileButtons = () => {
           style={styles.arrowStyle}
         />
       </TouchableOpacity>
-
-      <LogoutButton />
+      <View className="items-center justify-center">
+        <LogoutButton />
+      </View>
     </View>
   );
 };
