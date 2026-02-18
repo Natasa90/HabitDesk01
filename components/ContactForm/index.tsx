@@ -33,28 +33,41 @@ export const ContactForm: FC = () => {
     }
   }, [reqStatus]);
 
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
   const sendPayload = async () => {
     setReqStatus("pending");
 
-    const { data, error } = await supabase.from("contact_messages").insert([
-      {
-        email: payload.email,
-        subject: payload.subject,
-        message: payload.message,
-        department: payload.department,
-        name: payload.name,
-      },
-    ]);
+    await delay(2000); // Simulate network delay
 
-    console.log("Supabase response:", { data, error });
+    try {
+      const response = await fetch("http://127.0.0.1:3001/contacts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: payload.email,
+          subject: payload.subject,
+          message: payload.message,
+          department: payload.department,
+          name: payload.name,
+        }),
+      });
 
-    if (error) {
-      console.error("Error inserting message:", error);
-      setReqStatus("error");
-    } else {
-      console.log("Message stored successfully:", data);
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+
+      const data = await response.json();
+      console.log("Server response:", data);
+
       setReqStatus("success");
       resetForm();
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setReqStatus("error");
     }
   };
 
