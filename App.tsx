@@ -8,29 +8,51 @@ import {
   SplashScreen,
   HomeScreen,
   LoginScreen,
-  UserProfileScreen,
-  PorchScreen,
-  FreeResourcesScreen,
   CreateAccountScreen,
   ResetPasswordScreen,
   CreateNewPasswordScreen,
   ScheduleLearningScreen,
   ContactScreen,
 } from "./screens";
+import { MainTabs } from "./navigation/MainTabs";
 import { UserInfoProvider } from "./context/UserInfoContext";
 import { UserContextProps } from "./types/UserTypes";
-import Footer from "./components/Footer";
+//import Footer from "./components/Footer";
 import { useFonts } from "./lib/hooks/useFonts";
 import supabase from "./lib/supabase";
-import { DeepLinkingHandler } from "./components/navigation/DeepLinkingHandler";
+//import { DeepLinkingHandler } from "./components/navigation/DeepLinkingHandler";
 import { BackgroundWrapper } from "./components/Layout/BackgroundWrapper";
 import {
   setupLocalNotificationsAsync,
   setNotificationCategories,
 } from "./lib/helpers/notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { RootStackParamList } from "./types/RootStackParamList";
+import { LinkingOptions } from "@react-navigation/native";
 
-const Stack = createNativeStackNavigator();
+const linking: LinkingOptions<RootStackParamList> = {
+  prefixes: ["habitdesk://"],
+  config: {
+    screens: {
+      Home: "home",
+      Login: "login",
+      MainTabs: {
+        screens: {
+          Porch: "porch",
+          Progress: "profile",
+          Resources: "free-resources",
+        },
+      },
+      CreateAccount: "create-account",
+      ResetPassword: "reset-password",
+      CreateNewPassword: "create-new-password",
+      ScheduleLearning: "schedule-learning",
+      Contact: "contact",
+    },
+  },
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [initialRoute, setInitialRoute] = useState("Splash");
@@ -97,25 +119,8 @@ export default function App() {
     <UserInfoProvider>
       <SafeAreaView className="flex-1 bg-customBlue2">
         <BackgroundWrapper>
-          <NavigationContainer
-            linking={{
-              prefixes: ["habitdesk://"],
-              config: {
-                screens: {
-                  Home: "home",
-                  Login: "login",
-                  UserProfile: "profile",
-                  Porch: "porch",
-                  FreeResources: "free-resources",
-                  CreateAccount: "create-account",
-                  ResetPassword: "reset-password",
-                  CreateNewPassword: "create-new-password",
-                  ScheduleLearning: "schedule-learning",
-                },
-              },
-            }}
-          >
-            <DeepLinkingHandler />
+          <NavigationContainer linking={linking}>
+            {/*<DeepLinkingHandler />*/}
             <Stack.Navigator
               initialRouteName="Splash"
               screenOptions={{
@@ -148,33 +153,11 @@ export default function App() {
                 }}
               />
               <Stack.Screen
-                name="UserProfile"
-                component={UserProfileScreen}
-                options={{
-                  headerShown: false,
-                  title: "My Profile",
-                }}
+                name="MainTabs"
+                component={MainTabs}
+                options={{ headerShown: false }}
               />
-              <Stack.Screen
-                name="Porch"
-                component={PorchScreen}
-                options={{
-                  headerStyle: {
-                    backgroundColor: "#f8f8f8",
-                  },
-                  headerTitle: "",
-                }}
-              />
-              <Stack.Screen
-                name="FreeResources"
-                component={FreeResourcesScreen}
-                options={{
-                  headerStyle: {
-                    backgroundColor: "#f8f8f8",
-                  },
-                  headerTitle: "",
-                }}
-              />
+
               <Stack.Screen
                 name="ScheduleLearning"
                 component={ScheduleLearningScreen}
@@ -227,7 +210,7 @@ export default function App() {
               />
             </Stack.Navigator>
             <StatusBar style="dark" />
-            <Footer />
+            {/*<Footer />*/}
           </NavigationContainer>
         </BackgroundWrapper>
       </SafeAreaView>

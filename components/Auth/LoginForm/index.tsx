@@ -1,6 +1,11 @@
 import { useState, FC, useContext } from "react";
 import { TextWrapper } from "@/components/Layout";
-import { View, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { LoginProps } from "@/types/AuthTypes";
 import { useTypedNavigation } from "@/lib/hooks";
 import { UserInfoContext } from "@/context/UserInfoContext";
@@ -15,8 +20,8 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
   const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [isRequestReady, signinError, githubLoading, promptAsync] = useGithubLogin();
-
+  const [isRequestReady, signinError, githubLoading, promptAsync] =
+    useGithubLogin();
 
   const navigation = useTypedNavigation();
   const { setUserInfo } = useContext(UserInfoContext);
@@ -32,18 +37,28 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
   const handleLogin = async () => {
     setIsLoading(true);
     const success = await signInWithEmail(email, password, setUserInfo);
-    setIsLoading(false); 
+    setIsLoading(false);
 
     if (success) {
-      navigation.navigate("UserProfile");
+      navigation.replace("MainTabs");
     }
   };
 
   return (
-    <View className="p-6 mx-8 bg-white rounded-xl shadow-xl" style={styles.authFormsShadow}>
+    <View
+      className="p-6 mx-8 bg-white rounded-xl shadow-xl"
+      style={styles.authFormsShadow}
+    >
       <View className="flex-row">
-        <FontAwesome name="envelope-o" size={24} color="gray" style={{ paddingLeft: 3 }} />
-        <TextWrapper className="text-base font-medium text-gray-900 pl-2">Email</TextWrapper>
+        <FontAwesome
+          name="envelope-o"
+          size={24}
+          color="gray"
+          style={{ paddingLeft: 3 }}
+        />
+        <TextWrapper className="text-base font-medium text-gray-900 pl-2">
+          Email
+        </TextWrapper>
       </View>
       <TextInput
         placeholder="Email address"
@@ -53,8 +68,15 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
         className="px-3 py-3 border font-IBM_italic border-gray-300 rounded-md text-gray-900 mt-2 mb-5"
       />
       <View className="flex-row">
-        <FontAwesome name="lock" size={26} color="gray" style={{ paddingLeft: 3 }} />
-        <TextWrapper className="text-base font-medium text-gray-900 pl-2">Password</TextWrapper>
+        <FontAwesome
+          name="lock"
+          size={26}
+          color="gray"
+          style={{ paddingLeft: 3 }}
+        />
+        <TextWrapper className="text-base font-medium text-gray-900 pl-2">
+          Password
+        </TextWrapper>
       </View>
       <TextInput
         placeholder="Password (min. 8 characters)"
@@ -64,15 +86,19 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
         className="px-3 py-3 mt-1 mb-5 border font-IBM_italic border-gray-300 rounded-md text-gray-900"
       />
       <TouchableOpacity onPress={resetPassword}>
-        <TextWrapper className="text-sm text-gray-500 pb-3">Forgot Password?</TextWrapper>
+        <TextWrapper className="text-sm text-gray-500 pb-3">
+          Forgot Password?
+        </TextWrapper>
       </TouchableOpacity>
 
-       {isLoading || githubLoading ? (
+      {isLoading || githubLoading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-    <>
+        <>
           <AccountButton onPress={handleLogin}>
-            <TextWrapper className="text-white font-IBM_semibold">Log In</TextWrapper>
+            <TextWrapper className="text-white font-IBM_semibold">
+              Log In
+            </TextWrapper>
           </AccountButton>
           <AccountButton
             onPress={() => {
@@ -80,17 +106,25 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
             }}
             disabled={!isRequestReady}
           >
-            <TextWrapper className="text-white font-IBM_semibold">Log In with GitHub</TextWrapper>
+            <TextWrapper className="text-white font-IBM_semibold">
+              Log In with GitHub
+            </TextWrapper>
           </AccountButton>
         </>
       )}
       {signinError?.error && (
-        <TextWrapper className="text-red-500 text-center">{signinError.error}</TextWrapper>
+        <TextWrapper className="text-red-500 text-center">
+          {signinError.error}
+        </TextWrapper>
       )}
 
-      <TextWrapper className="text-center text-gray-500 my-6">Don’t have an account? </TextWrapper>
+      <TextWrapper className="text-center text-gray-500 my-6">
+        Don’t have an account?{" "}
+      </TextWrapper>
       <TouchableOpacity onPress={signUp}>
-        <TextWrapper className="text-center font-bold text-xl text-[#0B65C2]">Join now</TextWrapper>
+        <TextWrapper className="text-center font-bold text-xl text-[#0B65C2]">
+          Join now
+        </TextWrapper>
       </TouchableOpacity>
     </View>
   );

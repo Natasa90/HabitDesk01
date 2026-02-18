@@ -1,26 +1,26 @@
-import { ImageSourcePropType } from 'react-native';
+import { ImageSourcePropType } from "react-native";
 
 export interface LoginProps {
-    signUp: () => void
-    resetPassword: () => void; 
-};
+  signUp: () => void;
+  resetPassword: () => void;
+}
 
 export interface CreateAccountProps {
-    signIn: () => void; 
-};
+  signIn: () => void;
+}
 
 export interface ResetPasswordProps {
-  resetPassword: () => void; 
-};
+  resetPassword: () => void;
+}
 
 export interface FormTitleProps {
-  title: string
-  logo: ImageSourcePropType; 
-};
+  title: string;
+  logo: ImageSourcePropType;
+}
 
 export interface TermsAgreementProps {
- checked: boolean;
- setChecked: (value: boolean) => void;
+  checked: boolean;
+  setChecked: (value: boolean) => void;
 }
 
 export interface CustomCheckboxProps {
