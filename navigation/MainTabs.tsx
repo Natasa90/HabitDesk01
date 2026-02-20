@@ -4,6 +4,7 @@ import {
   PorchScreen,
   FreeResourcesScreen,
 } from "../screens";
+import { PorchStack } from "./PorchStack";
 import { MainTabParamList } from "@/types/MainTabParamList";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -17,7 +18,7 @@ export const MainTabs = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
 
-          if (route.name === "Porch") {
+          if (route.name === "PorchStack") {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Progress") {
             iconName = focused ? "stats-chart" : "stats-chart-outline";
@@ -31,7 +32,11 @@ export const MainTabs = () => {
         tabBarInactiveTintColor: "gray",
       })}
     >
-      <Tab.Screen name="Porch" component={PorchScreen} />
+      <Tab.Screen
+        name="PorchStack"
+        component={PorchStack}
+        options={{ headerShown: false, title: "Porch" }}
+      />
       <Tab.Screen name="Progress" component={UserProfileScreen} />
       <Tab.Screen name="Resources" component={FreeResourcesScreen} />
     </Tab.Navigator>

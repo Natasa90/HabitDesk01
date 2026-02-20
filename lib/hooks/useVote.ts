@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from "react";
-import { UserInfoContext } from "@/context/UserInfoContext";
+import { useUserInfo } from "@/context/UserInfoContext";
 import supabase from "@/lib/supabase";
 
 export const useVote = (item: any, tableName: string, idField: string) => {
   const [isUpdating, setIsUpdating] = useState(false);
-  const { userInfo } = useContext(UserInfoContext);
+  const { userInfo } = useUserInfo();
   const [hasVoted, setHasVoted] = useState<boolean>(false);
   const [likes, setLikes] = useState(item.likes);
 
@@ -49,4 +49,3 @@ export const useVote = (item: any, tableName: string, idField: string) => {
 
   return { isUpdating, hasVoted, handleVote, likes };
 };
-

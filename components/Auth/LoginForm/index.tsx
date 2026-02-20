@@ -1,46 +1,48 @@
-import { useState, FC, useContext } from "react";
-import { TextWrapper } from "@/components/Layout";
+import { useState, FC } from "react";
 import {
   View,
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { LoginProps } from "@/types/AuthTypes";
-import { useTypedNavigation } from "@/lib/hooks";
-import { UserInfoContext } from "@/context/UserInfoContext";
-import { AccountButton } from "@/components/Buttons";
 import { FontAwesome } from "@expo/vector-icons";
-import { signInWithEmail } from "@/lib/helpers";
+
+import { TextWrapper } from "@/components/Layout";
+import { AccountButton } from "@/components/Buttons";
+import { LoginProps } from "@/types/AuthTypes";
 import { useGithubLogin } from "@/lib/hooks/useGitHubLogin";
+import { signInWithEmail } from "@/lib/helpers";
 import { styles } from "@/components/Layout";
 
 export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
-  const [isRequestReady, signinError, githubLoading, promptAsync] =
-    useGithubLogin();
-
-  const navigation = useTypedNavigation();
-  const { setUserInfo } = useContext(UserInfoContext);
-
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
-  };
-
-  const handlePasswordChange = (text: string) => {
-    setPassword(text);
-  };
+  const {
+    signInWithGithub,
+    loading: githubLoading,
+    error: githubError,
+  } = useGithubLogin();
 
   const handleLogin = async () => {
     setIsLoading(true);
-    const success = await signInWithEmail(email, password, setUserInfo);
-    setIsLoading(false);
+    setEmailError(null);
 
-    if (success) {
-      navigation.replace("MainTabs");
+    try {
+      const { error } = await signInWithEmail(email, password);
+
+      if (error) {
+        setEmailError(error.message);
+      }
+
+      // 🔥 DO NOT navigate
+      // Supabase auth listener + RootStack will switch screens automatically
+    } catch (err) {
+      setEmailError("Something went wrong.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -49,6 +51,7 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
       className="p-6 mx-8 bg-white rounded-xl shadow-xl"
       style={styles.authFormsShadow}
     >
+      {/* EMAIL */}
       <View className="flex-row">
         <FontAwesome
           name="envelope-o"
@@ -60,13 +63,16 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
           Email
         </TextWrapper>
       </View>
+
       <TextInput
         placeholder="Email address"
         keyboardType="email-address"
         value={email}
-        onChangeText={handleEmailChange}
-        className="px-3 py-3 border font-IBM_italic border-gray-300 rounded-md text-gray-900 mt-2 mb-5"
+        onChangeText={setEmail}
+        className="px-3 py-3 border border-gray-300 rounded-md text-gray-900 mt-2 mb-5"
       />
+
+      {/* PASSWORD */}
       <View className="flex-row">
         <FontAwesome
           name="lock"
@@ -78,13 +84,15 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
           Password
         </TextWrapper>
       </View>
+
       <TextInput
         placeholder="Password (min. 8 characters)"
         secureTextEntry
         value={password}
-        onChangeText={handlePasswordChange}
-        className="px-3 py-3 mt-1 mb-5 border font-IBM_italic border-gray-300 rounded-md text-gray-900"
+        onChangeText={setPassword}
+        className="px-3 py-3 mt-1 mb-5 border border-gray-300 rounded-md text-gray-900"
       />
+
       <TouchableOpacity onPress={resetPassword}>
         <TextWrapper className="text-sm text-gray-500 pb-3">
           Forgot Password?
@@ -96,31 +104,31 @@ export const LoginForm: FC<LoginProps> = ({ signUp, resetPassword }) => {
       ) : (
         <>
           <AccountButton onPress={handleLogin}>
-            <TextWrapper className="text-white font-IBM_semibold">
-              Log In
-            </TextWrapper>
+            <TextWrapper className="text-white">Log In</TextWrapper>
           </AccountButton>
-          <AccountButton
-            onPress={() => {
-              promptAsync();
-            }}
-            disabled={!isRequestReady}
-          >
-            <TextWrapper className="text-white font-IBM_semibold">
-              Log In with GitHub
-            </TextWrapper>
+
+          <AccountButton onPress={signInWithGithub}>
+            <TextWrapper className="text-white">Log In with GitHub</TextWrapper>
           </AccountButton>
         </>
       )}
-      {signinError?.error && (
+
+      {emailError && (
         <TextWrapper className="text-red-500 text-center">
-          {signinError.error}
+          {emailError}
+        </TextWrapper>
+      )}
+
+      {githubError && (
+        <TextWrapper className="text-red-500 text-center">
+          {githubError}
         </TextWrapper>
       )}
 
       <TextWrapper className="text-center text-gray-500 my-6">
-        Don’t have an account?{" "}
+        Don’t have an account?
       </TextWrapper>
+
       <TouchableOpacity onPress={signUp}>
         <TextWrapper className="text-center font-bold text-xl text-[#0B65C2]">
           Join now

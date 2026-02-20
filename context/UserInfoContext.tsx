@@ -1,85 +1,64 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UserContextProps, UserInfo } from "@/types/UserTypes";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 import supabase from "@/lib/supabase";
+import { User } from "@supabase/supabase-js";
 
-export const UserInfoContext = createContext<UserContextProps>({
-  userInfo: null,
-  setUserInfo: async () => {},
-});
+interface UserContextType {
+  userInfo: User | null;
+  setUserInfo: (user: User | null) => void;
+  loading: boolean;
+}
+
+const UserInfoContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
-  const [userInfo, setUserInfoState] = useState<UserInfo | null>(null);
-	const [bootstrapped, setBootstrapped] = useState(false);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const restoreUser = async () => {
-      const { data, error } = await supabase.auth.getSession();
+    // 1️⃣ Restore existing session
+    const restoreSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      if (error) {
-        console.error("Supabase session error:", error);
-      }
-
-      if (data?.session?.user?.email) {
-        setUserInfoState({ email: data.session.user.email });
-      } else {
-        console.warn("Supabase returned no session. Trying AsyncStorage.");
-
-        const storedEmail = await AsyncStorage.getItem("userEmail");
-        const storedToken = await AsyncStorage.getItem("userToken");
-
-        if (storedEmail && storedToken) {
-          setUserInfoState({ email: storedEmail });
-        } else {
-          console.warn("No session found anywhere.");
-        }
-				setBootstrapped(true);
-      }
+      setUserInfo(session?.user ?? null);
+      setLoading(false);
     };
 
-    restoreUser();
+    restoreSession();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        const email = session?.user?.email;
-
-        if (session && email) {
-
-          setUserInfoState({ email });
-          await AsyncStorage.setItem("userEmail", email);
-          await AsyncStorage.setItem("userToken", session.access_token);
-        } else {
-          if (bootstrapped) {
-
-            setUserInfoState(null);
-            await AsyncStorage.removeItem("userEmail");
-            await AsyncStorage.removeItem("userToken");
-          } else {
-            console.log("Ignoring null session during bootstrap.");
-          }
-        }
-      }
+    // 2️⃣ Listen to login/logout
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUserInfo(session?.user ?? null);
+        setLoading(false);
+      },
     );
-		
+
     return () => {
-      authListener?.subscription.unsubscribe();
+      listener.subscription.unsubscribe();
     };
   }, []);
 
-  const setUserInfo = async (info: UserInfo | null) => {
-    setUserInfoState(info);
-
-    if (info?.email) {
-      await AsyncStorage.setItem("userEmail", info.email);
-    } else {
-      await AsyncStorage.removeItem("userEmail");
-      await AsyncStorage.removeItem("userToken");
-    }
-  };
-
   return (
-    <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>
+    <UserInfoContext.Provider value={{ userInfo, loading, setUserInfo }}>
       {children}
     </UserInfoContext.Provider>
   );
 };
+
+export function useUserInfo() {
+  const context = useContext(UserInfoContext);
+
+  if (!context) {
+    throw new Error("useUserInfo must be used inside UserInfoProvider");
+  }
+
+  return context;
+}

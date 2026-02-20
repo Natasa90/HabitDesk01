@@ -1,19 +1,19 @@
 import { useState, useEffect, useContext } from "react";
 import supabase from "@/lib/supabase";
-import { UserInfoContext } from "@/context/UserInfoContext";
+import { useUserInfo } from "@/context/UserInfoContext";
 
 export const useFetchTasks = () => {
   const [toDo, setToDo] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
 
-  const { userInfo } = useContext(UserInfoContext); 
+  const { userInfo } = useUserInfo();
 
   useEffect(() => {
     const fetchTasks = async () => {
       const { data, error } = await supabase
         .from("tasks")
         .select("*")
-        .eq("user_email", userInfo?.email);;
+        .eq("user_email", userInfo?.email);
       if (error) {
         setError("Error fetching tasks!");
         console.error("Error fetching tasks:", error);

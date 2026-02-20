@@ -1,11 +1,15 @@
 import { useState } from "react";
 import supabase from "@/lib/supabase";
-import { UserInfoContext } from "@/context/UserInfoContext";
+import { useUserInfo } from "@/context/UserInfoContext";
 import { useContext } from "react";
 
-export const useAddTask = (toDo: string[], setToDo: React.Dispatch<React.SetStateAction<string[]>>, setInput: React.Dispatch<React.SetStateAction<string>>) => {
+export const useAddTask = (
+  toDo: string[],
+  setToDo: React.Dispatch<React.SetStateAction<string[]>>,
+  setInput: React.Dispatch<React.SetStateAction<string>>,
+) => {
   const [error, setError] = useState<string>("");
-  const { userInfo } = useContext(UserInfoContext);
+  const { userInfo } = useUserInfo();
 
   const addTask = async (input: string) => {
     if (input.trim()) {
@@ -14,12 +18,12 @@ export const useAddTask = (toDo: string[], setToDo: React.Dispatch<React.SetStat
         return;
       }
 
-      const { data, error } = await supabase
-        .from("tasks")
-        .insert([{ 
+      const { data, error } = await supabase.from("tasks").insert([
+        {
           task: input,
           user_email: userInfo.email,
-        }]);
+        },
+      ]);
 
       if (error) {
         setError("Error storing task!");
@@ -27,7 +31,7 @@ export const useAddTask = (toDo: string[], setToDo: React.Dispatch<React.SetStat
       } else {
         setToDo([...toDo, input]);
         setError("");
-        setInput("")
+        setInput("");
       }
     } else {
       setError("Please Write a Task to Add.");

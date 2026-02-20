@@ -25,23 +25,6 @@ export default {
         ITSAppUsesNonExemptEncryption: false,
         "aps-environment": "production",
       },
-      config: {
-        linking: {
-          prefixes: ["habitdesk://"],
-          config: {
-            screens: {
-              Home: "home",
-              Login: "login",
-              UserProfile: "profile",
-              Porch: "porch",
-              FreeResources: "free-resources",
-              CreateAccount: "create-account",
-              ResetPassword: "reset-password",
-              CreateNewPassword: "create-new-password",
-            },
-          },
-        },
-      },
     },
     android: {
       package: "com.anonymous.habitdesk",

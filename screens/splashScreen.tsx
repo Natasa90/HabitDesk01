@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useContext } from "react";
 import { View, Image, Animated, StatusBar } from "react-native";
 import { useTypedNavigation } from "@/lib/hooks";
-import { UserInfoContext } from "@/context/UserInfoContext";
+import { useUserInfo } from "@/context/UserInfoContext";
 import { styles } from "@/components/Layout";
 
 export const SplashScreen = () => {
   const navigation = useTypedNavigation();
   const logoBounce = useRef(new Animated.Value(0)).current;
-  const { userInfo } = useContext(UserInfoContext);
+  const { userInfo } = useUserInfo();
 
   useEffect(() => {
     const startAnimation = () => {

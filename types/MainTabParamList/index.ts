@@ -1,5 +1,5 @@
 export type MainTabParamList = {
-  Porch: undefined;
+  PorchStack: undefined;
   Progress: undefined;
   Resources: undefined;
 };
