@@ -35,7 +35,7 @@ export const handlePasswordReset = async (
         [
           {
             text: "OK",
-            onPress: () => navigation.navigate("Home"),
+            onPress: () => navigation.navigate("Auth", { screen: "Login" }),
           },
         ],
       );

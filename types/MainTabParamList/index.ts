@@ -1,5 +1,9 @@
+import { PorchStackParamList } from "../PorchStackParamList";
+
 export type MainTabParamList = {
-  PorchStack: undefined;
+  PorchStack: {
+    screen: keyof PorchStackParamList;
+  };
   Progress: undefined;
   Resources: undefined;
 };

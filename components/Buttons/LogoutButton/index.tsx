@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Alert, View, ActivityIndicator } from "react-native";
 import { TextWrapper } from "@/components/Layout";
 import supabase from "@/lib/supabase";
@@ -16,11 +16,6 @@ export const LogoutButton = () => {
       setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      setUserInfo(null);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Home" }],
-      });
     } catch (error) {
       Alert.alert("Logout Error");
     } finally {

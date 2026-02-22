@@ -1,29 +1,30 @@
 import { TouchableOpacity, View } from "react-native";
 import { TextWrapper } from "@/components/Layout";
+import { useTypedNavigation } from "@/lib/hooks/useTypedNavigation";
 import { LogoutButton } from "@/components/Buttons";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "@/components/Layout";
 import {
-  CompositeNavigationProp,
   useNavigation,
+  CompositeNavigationProp,
 } from "@react-navigation/native";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainTabParamList } from "@/types/MainTabParamList";
-import { RootStackParamList } from "@/types/NavigationTypes";
+import { RootStackParamList } from "@/types/RootStackParamList";
 
-type TabNav = BottomTabNavigationProp<MainTabParamList>;
-type StackNav = NativeStackNavigationProp<RootStackParamList>;
-
-type ProfileScreenNavigationProp = CompositeNavigationProp<TabNav, StackNav>;
-
+// Composite navigation type for nested tabs + stacks
+type ProfileScreenNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<MainTabParamList>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
 export const UserProfileButtons = () => {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
 
   return (
     <View className="gap-6">
       <TouchableOpacity
-        onPress={() => navigation.navigate("Porch")}
+        onPress={() => navigation.navigate("PorchStack", { screen: "Porch" })}
         className="bg-gray-300 p-6 rounded-xl flex-row justify-center items-center"
       >
         <TextWrapper className="text-lg text-gray-900">
@@ -37,7 +38,7 @@ export const UserProfileButtons = () => {
         />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Resources")}
+        onPress={() => navigation.navigate("MainTabs", { screen: "Resources" })}
         className="bg-gray-300 p-6 rounded-xl flex-row justify-center items-center"
       >
         <TextWrapper className="text-lg text-gray-900">
@@ -51,7 +52,7 @@ export const UserProfileButtons = () => {
         />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Contact")}
+        onPress={() => navigation.navigate("PorchStack", { screen: "Contact" })}
         className="bg-gray-300 p-6 rounded-xl flex-row justify-center items-center"
       >
         <TextWrapper className="text-lg text-gray-900">
