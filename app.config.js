@@ -20,7 +20,7 @@ export default {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "com.slavo.habitdesk",
-      buildNumber: "21",
+      buildNumber: "22",
       infoPlist: {
         ITSAppUsesNonExemptEncryption: false,
         "aps-environment": "production",
