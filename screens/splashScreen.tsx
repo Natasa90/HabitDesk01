@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, Image, Animated, StatusBar } from "react-native";
-import { useTypedNavigation } from "@/lib/hooks";
+import { useTypedNavigation } from "@/lib/hooks/useTypedNavigation";
 import { useUserInfo } from "@/context/UserInfoContext";
 import { styles } from "@/components/Layout";
 
@@ -24,10 +24,11 @@ export const SplashScreen = () => {
         }),
       ]).start(() => {
         if (userInfo?.email) {
-          navigation.replace("MainTabs");
+          // ✅ Navigate to MainTabs -> PorchStack -> Porch
+          navigation.replace("MainTabs", { screen: "PorchStack" });
         } else {
-          console.log("No userInfo found. Redirecting to Home.");
-          navigation.replace("Home");
+          // ✅ Navigate to Auth -> Login
+          navigation.replace("Auth", { screen: "Login" });
         }
       });
     };
@@ -40,9 +41,7 @@ export const SplashScreen = () => {
       <StatusBar barStyle="light-content" />
       <Animated.View
         className="justify-center items-center"
-        style={{
-          transform: [{ translateY: logoBounce }],
-        }}
+        style={{ transform: [{ translateY: logoBounce }] }}
       >
         <Image
           source={require("../assets/images/slavoio-logo.png")}

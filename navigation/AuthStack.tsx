@@ -1,17 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { AuthStackParamList } from "@/types/AuthStackParamList";
 import {
   LoginScreen,
   CreateAccountScreen,
   ResetPasswordScreen,
   CreateNewPasswordScreen,
 } from "../screens";
-
-export type AuthStackParamList = {
-  Login: undefined;
-  CreateAccount: undefined;
-  ResetPassword: undefined;
-  CreateNewPassword: undefined;
-};
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 

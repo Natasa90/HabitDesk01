@@ -1,12 +1,11 @@
 import { MainTabParamList } from "../MainTabParamList";
-import { AuthStackParamList } from "../AuthStackParamList";
 
 export type RootStackParamList = {
   Splash: undefined;
   Auth: {
-    screen: keyof AuthStackParamList;
+    screen: "Login" | "CreateAccount" | "ResetPassword" | "CreateNewPassword";
   };
   MainTabs: {
-    screen: keyof MainTabParamList;
+    screen: keyof MainTabParamList; // Nested tabs
   };
 };

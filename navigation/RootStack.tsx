@@ -3,12 +3,7 @@ import { SplashScreen } from "../screens";
 import { AuthStack } from "./AuthStack";
 import { MainTabs } from "./MainTabs";
 import { useUserInfo } from "../context/UserInfoContext";
-
-export type RootStackParamList = {
-  Splash: undefined;
-  Auth: undefined;
-  MainTabs: undefined;
-};
+import { RootStackParamList } from "@/types/RootStackParamList";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

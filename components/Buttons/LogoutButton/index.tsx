@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Alert, View, ActivityIndicator } from "react-native";
 import { TextWrapper } from "@/components/Layout";
 import supabase from "@/lib/supabase";
-import { useTypedNavigation } from "../../../lib/hooks/useTypedNavigation";
+import { useTypedNavigation } from "@/lib/hooks/useTypedNavigation";
 import { useUserInfo } from "@/context/UserInfoContext";
 import { AccountButton } from "@/components/Buttons/AccountButton";
 
@@ -16,8 +16,16 @@ export const LogoutButton = () => {
       setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+
+      setUserInfo(null);
+
+      // ✅ Reset navigation to Auth -> Login
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Auth", params: { screen: "Login" } }],
+      });
     } catch (error) {
-      Alert.alert("Logout Error");
+      Alert.alert("Logout Error", "Failed to log out. Please try again.");
     } finally {
       setLoading(false);
     }
