@@ -7,7 +7,8 @@ import { styles } from "@/components/Layout";
 export const SplashScreen = () => {
   const navigation = useTypedNavigation();
   const logoBounce = useRef(new Animated.Value(0)).current;
-  const { userInfo } = useUserInfo();
+
+  const { userInfo, loading } = useUserInfo();
 
   useEffect(() => {
     const startAnimation = () => {
@@ -22,23 +23,33 @@ export const SplashScreen = () => {
           duration: 500,
           useNativeDriver: true,
         }),
-      ]).start(() => {
-        if (userInfo?.email) {
-          // ✅ Navigate to MainTabs -> PorchStack -> Porch
-          navigation.replace("MainTabs", { screen: "PorchStack" });
-        } else {
-          // ✅ Navigate to Auth -> Login
-          navigation.replace("Auth", { screen: "Login" });
-        }
-      });
+      ]).start();
     };
 
     startAnimation();
-  }, [logoBounce, navigation, userInfo]);
+  }, []);
+
+  useEffect(() => {
+    if (loading) return;
+
+    const timer = setTimeout(() => {
+      if (userInfo?.email) {
+        navigation.replace("AppDrawer", {
+          screen: "PorchStack",
+          params: { screen: "Porch" },
+        });
+      } else {
+        navigation.replace("Auth", { screen: "Login" });
+      }
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, [loading, userInfo, navigation]);
 
   return (
     <View style={styles.splashScreenView}>
       <StatusBar barStyle="light-content" />
+
       <Animated.View
         className="justify-center items-center"
         style={{ transform: [{ translateY: logoBounce }] }}

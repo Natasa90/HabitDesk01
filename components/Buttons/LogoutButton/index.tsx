@@ -17,13 +17,7 @@ export const LogoutButton = () => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
 
-      setUserInfo(null);
-
-      // ✅ Reset navigation to Auth -> Login
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Auth", params: { screen: "Login" } }],
-      });
+      setUserInfo(null); // 👈 This alone switches to AuthStack
     } catch (error) {
       Alert.alert("Logout Error", "Failed to log out. Please try again.");
     } finally {
@@ -32,7 +26,7 @@ export const LogoutButton = () => {
   };
 
   return (
-    <View className="ml-6">
+    <View className="mr-4">
       {loading ? (
         <ActivityIndicator size="large" color="#0B65C2" />
       ) : (

@@ -38,7 +38,9 @@ export const UserProfileButtons = () => {
         />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("MainTabs", { screen: "Resources" })}
+        onPress={() =>
+          navigation.navigate("AppDrawer", { screen: "Resources" })
+        }
         className="bg-gray-300 p-6 rounded-xl flex-row justify-center items-center"
       >
         <TextWrapper className="text-lg text-gray-900">

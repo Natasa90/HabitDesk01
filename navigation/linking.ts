@@ -1,5 +1,5 @@
 import { LinkingOptions } from "@react-navigation/native";
-import { RootStackParamList } from "./RootStack";
+import { RootStackParamList } from "@/types/RootStackParamList";
 
 export const linking: LinkingOptions<RootStackParamList> = {
   prefixes: ["habitdesk://"],
@@ -17,7 +17,7 @@ export const linking: LinkingOptions<RootStackParamList> = {
         },
       },
 
-      MainTabs: {
+      AppDrawer: {
         screens: {
           PorchStack: {
             screens: {
@@ -26,7 +26,9 @@ export const linking: LinkingOptions<RootStackParamList> = {
               Contact: "contact",
             },
           },
+
           Progress: "profile",
+
           Resources: "free-resources",
         },
       },

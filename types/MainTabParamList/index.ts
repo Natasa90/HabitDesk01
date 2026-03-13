@@ -1,9 +1,8 @@
-import { PorchStackParamList } from "../PorchStackParamList";
+import { NavigatorScreenParams } from "@react-navigation/native";
+import { PorchStackParamList } from "@/navigation/PorchStack";
 
 export type MainTabParamList = {
-  PorchStack: {
-    screen: keyof PorchStackParamList;
-  };
+  PorchStack: NavigatorScreenParams<PorchStackParamList>;
   Progress: undefined;
   Resources: undefined;
 };

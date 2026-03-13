@@ -16,34 +16,34 @@ export const useGithubLogin = () => {
     try {
       const redirectTo = AuthSession.makeRedirectUri({
         scheme: "habitdesk",
+        path: "auth",
       });
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "github",
         options: {
           redirectTo,
-          skipBrowserRedirect: true, // 🔥 IMPORTANT
+          skipBrowserRedirect: true,
         },
       });
 
       if (error) throw error;
-
-      if (!data?.url) {
-        throw new Error("No OAuth URL returned");
-      }
+      if (!data?.url) throw new Error("No OAuth URL returned");
 
       const result = await WebBrowser.openAuthSessionAsync(
         data.url,
         redirectTo,
       );
 
-      if (result.type === "success") {
-        // Supabase will handle the session automatically
-        // onAuthStateChange will fire
+      if (result.type === "success" && result.url) {
+        const { error: exchangeError } =
+          await supabase.auth.exchangeCodeForSession(result.url);
+
+        if (exchangeError) throw exchangeError;
       }
     } catch (err) {
       console.error("GitHub login error:", err);
-      setError("Something went wrong during login.");
+      setError("Something went wrong during GitHub login.");
     } finally {
       setLoading(false);
     }

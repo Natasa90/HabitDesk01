@@ -30,8 +30,7 @@ export default {
       package: "com.anonymous.habitdesk",
     },
     scheme: "habitdesk",
-    deepLinking: true,
-    deepLinks: ["habitdesk://"],
+
     platforms: ["ios", "android", "web"],
     extra: {
       supabaseUrl: process.env.SUPABASE_URL,

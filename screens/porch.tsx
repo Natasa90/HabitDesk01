@@ -1,5 +1,6 @@
 import React from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, View, Button } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import {
   PorchListHeader,
   PorchHeader,
@@ -11,6 +12,7 @@ import { TextWrapper } from "@/components/Layout";
 
 export const PorchScreen = () => {
   const { userInfo, loading } = useUserInfo();
+  const navigation = useNavigation<any>();
 
   // If the user is not ready yet, you can render a loader
   if (loading) {

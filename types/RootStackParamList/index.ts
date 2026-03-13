@@ -1,11 +1,11 @@
+import { NavigatorScreenParams } from "@react-navigation/native";
+import { AuthStackParamList } from "../AuthStackParamList";
 import { MainTabParamList } from "../MainTabParamList";
 
 export type RootStackParamList = {
   Splash: undefined;
-  Auth: {
-    screen: "Login" | "CreateAccount" | "ResetPassword" | "CreateNewPassword";
-  };
-  MainTabs: {
-    screen: keyof MainTabParamList; // Nested tabs
-  };
+
+  Auth: NavigatorScreenParams<AuthStackParamList>;
+
+  AppDrawer: NavigatorScreenParams<MainTabParamList>;
 };
