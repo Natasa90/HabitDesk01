@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import supabase from "@/lib/supabase";
-import { UserInfoContext } from "@/context/UserInfoContext";
+import { useUserInfo } from "@/context/UserInfoContext";
 
 interface LearningDate {
   date: string;
@@ -14,7 +14,7 @@ export const useUserLearningData = () => {
   const [weeklyLearningDays, setWeeklyLearningDays] = useState<number>(0);
   const [learningDates, setLearningDates] = useState<LearningDate[]>([]);
 
-  const { userInfo } = useContext(UserInfoContext);
+  const { userInfo } = useUserInfo();
 
   useEffect(() => {
     if (userInfo?.email) {
@@ -37,7 +37,6 @@ export const useUserLearningData = () => {
       if (userActivityData) {
         setWeeklyGoal(userActivityData.weekly_goal ?? 1);
         setLongestStreak(userActivityData.longest_streak ?? 0);
-
       }
 
       const { data: learningData, error: learningError } = await supabase
@@ -58,7 +57,7 @@ export const useUserLearningData = () => {
           learningData.map((entry) => ({
             date: new Date(entry.created_at).toISOString().split("T")[0],
             count: 1,
-          }))
+          })),
         );
       } else {
         setCurrentStreak(0);
@@ -85,7 +84,9 @@ export const useUserLearningData = () => {
 
     const sortedUniqueDates: Date[] = [
       ...new Set(
-        data.map((entry) => new Date(entry.created_at).toISOString().split("T")[0])
+        data.map(
+          (entry) => new Date(entry.created_at).toISOString().split("T")[0],
+        ),
       ),
     ]
       .map((date) => new Date(date))
@@ -99,7 +100,8 @@ export const useUserLearningData = () => {
       }
 
       const differenceInDays = Math.floor(
-        (currentDate.getTime() - (lastDate as Date).getTime()) / (1000 * 3600 * 24)
+        (currentDate.getTime() - (lastDate as Date).getTime()) /
+          (1000 * 3600 * 24),
       );
 
       if (differenceInDays === 1) {
@@ -113,13 +115,13 @@ export const useUserLearningData = () => {
     });
 
     if (lastDate !== null) {
-   const differenceToToday = Math.floor(
-    (today.getTime() - (lastDate as Date).getTime()) / (1000 * 3600 * 24)
-   );
-   if (differenceToToday > 1) {
-    currentStreak = 0;
-   }
-  }
+      const differenceToToday = Math.floor(
+        (today.getTime() - (lastDate as Date).getTime()) / (1000 * 3600 * 24),
+      );
+      if (differenceToToday > 1) {
+        currentStreak = 0;
+      }
+    }
 
     setCurrentStreak(currentStreak);
     setLongestStreak(longestStreak);

@@ -14,7 +14,7 @@ const supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key, {
     storage: AsyncStorage,
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: false,
+    detectSessionInUrl: false, // We handle the OAuth flow manually, so we don't want Supabase to try to detect sessions in the URL
   },
   global: {
     headers: {

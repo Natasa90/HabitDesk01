@@ -1,25 +1,21 @@
-import { FC, useState, useContext } from 'react';
-import {
-  View,
-  Alert,
-  Modal,
-  Platform,
-  TouchableOpacity,
-} from 'react-native';
-import { TextWrapper } from '@/components/Layout';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { UserInfoContext } from '@/context/UserInfoContext';
-import { LearningTimePickerProps } from '@/types/NotificationTypes';
-import { getIsFinalDateInPastOrNow } from '@/lib/helpers';
-import { useSaveLearningTime } from '@/lib/hooks';
+import { FC, useState, useContext } from "react";
+import { View, Alert, Modal, Platform, TouchableOpacity } from "react-native";
+import { TextWrapper } from "@/components/Layout";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { useUserInfo } from "@/context/UserInfoContext";
+import { LearningTimePickerProps } from "@/types/NotificationTypes";
+import { getIsFinalDateInPastOrNow } from "@/lib/helpers";
+import { useSaveLearningTime } from "@/lib/hooks";
 
-export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess }) => {
-  const { userInfo } = useContext(UserInfoContext);
+export const LearningTimePicker: FC<LearningTimePickerProps> = ({
+  onSaveSuccess,
+}) => {
+  const { userInfo } = useUserInfo();
 
   const [finalDate, setFinalDate] = useState(new Date());
   const [tempDate, setTempDate] = useState(new Date());
   const [hasPickedDate, setHasPickedDate] = useState(false);
-  const [mode, setMode] = useState<'date' | 'time'>('date');
+  const [mode, setMode] = useState<"date" | "time">("date");
   const [showPicker, setShowPicker] = useState(false);
 
   const resetDates = () => {
@@ -29,7 +25,7 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
     setHasPickedDate(false);
   };
 
-	const { saveLearningTime, isSaving } = useSaveLearningTime({
+  const { saveLearningTime, isSaving } = useSaveLearningTime({
     finalDate,
     userEmail: userInfo?.email,
     onSaveSuccess,
@@ -37,10 +33,9 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
     setHasPickedDate,
   });
 
-
   const openPicker = () => {
     setTempDate(finalDate);
-    setMode('date');
+    setMode("date");
     setShowPicker(true);
   };
 
@@ -51,15 +46,15 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
   };
 
   const onConfirm = () => {
-    if (mode === 'date') {
-      setMode('time');
+    if (mode === "date") {
+      setMode("time");
     } else {
       if (getIsFinalDateInPastOrNow(tempDate)) {
         Alert.alert(
-          'Oops!',
-          "Please pick another time — you can't schedule a reminder for the past or this exact minute ⏰"
+          "Oops!",
+          "Please pick another time — you can't schedule a reminder for the past or this exact minute ⏰",
         );
-        return; 
+        return;
       }
       setFinalDate(tempDate);
       setHasPickedDate(true);
@@ -89,11 +84,11 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
           </TextWrapper>
           <TextWrapper className="text-lg font-IBM_medium text-center text-customBlue">
             {finalDate.toLocaleString(undefined, {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
               hour12: true,
             })}
           </TextWrapper>
@@ -101,17 +96,19 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
             onPress={saveLearningTime}
             disabled={isSaving || getIsFinalDateInPastOrNow(finalDate)}
             className={`rounded-lg py-3 px-6 mt-4 self-center w-60 ${
-              isSaving || getIsFinalDateInPastOrNow(finalDate) ? 'bg-gray-300' : 'bg-green-600'
+              isSaving || getIsFinalDateInPastOrNow(finalDate)
+                ? "bg-gray-300"
+                : "bg-green-600"
             }`}
           >
             <TextWrapper className="text-white text-center text-lg font-semibold text-base">
-              {isSaving ? 'Setting Reminder...' : 'Confirm Reminder'}
+              {isSaving ? "Setting Reminder..." : "Confirm Reminder"}
             </TextWrapper>
           </TouchableOpacity>
         </View>
       )}
 
-      {Platform.OS === 'ios' && showPicker && (
+      {Platform.OS === "ios" && showPicker && (
         <Modal transparent animationType="slide">
           <View className="flex-1 justify-end bg-black/30">
             <View className="bg-white pt-2">
@@ -124,11 +121,13 @@ export const LearningTimePicker: FC<LearningTimePickerProps> = ({ onSaveSuccess 
 
               <View className="flex-row justify-end px-8 pb-8">
                 <TouchableOpacity onPress={onCancel}>
-                  <TextWrapper className="text-red-500 mr-6 text-lg">Cancel</TextWrapper>
+                  <TextWrapper className="text-red-500 mr-6 text-lg">
+                    Cancel
+                  </TextWrapper>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={onConfirm}>
                   <TextWrapper className="font-bold text-blue-500 text-lg">
-                    {mode === 'date' ? 'Next' : 'Done'}
+                    {mode === "date" ? "Next" : "Done"}
                   </TextWrapper>
                 </TouchableOpacity>
               </View>

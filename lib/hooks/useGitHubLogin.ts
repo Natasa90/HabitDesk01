@@ -1,98 +1,53 @@
-import { useContext, useState, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UserInfoContext } from "@/context/UserInfoContext";
+import { useState } from "react";
 import * as AuthSession from "expo-auth-session";
-import { CONFIG } from "@/lib/config";
-import { useTypedNavigation } from "@/lib/hooks";
-import { GithubLoginError } from "@/types/AuthTypes";
+import * as WebBrowser from "expo-web-browser";
+import supabase from "@/lib/supabase";
 
-export const useGithubLogin = (): [boolean, GithubLoginError, boolean, () => void] => {
-    const { setUserInfo } = useContext(UserInfoContext);
-    const navigation = useTypedNavigation();
-    const [signinError, setSigninError] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false); 
+WebBrowser.maybeCompleteAuthSession();
 
-    const redirectUri = AuthSession.makeRedirectUri({
+export const useGithubLogin = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const signInWithGithub = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const redirectTo = AuthSession.makeRedirectUri({
         scheme: "habitdesk",
-        path: "redirect",
-    });
+        path: "auth",
+      });
 
-    const [request, response, promptAsync] = AuthSession.useAuthRequest(
-        {
-            clientId: CONFIG.github.clientId,
-            redirectUri,
-            scopes: ["read:user", "user:email"],
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "github",
+        options: {
+          redirectTo,
+          skipBrowserRedirect: true,
         },
-        {
-            authorizationEndpoint: "https://github.com/login/oauth/authorize",
-            tokenEndpoint: "https://github.com/login/oauth/access_token",
-        }
-    );
+      });
 
-    useEffect(() => {
-        if (response?.type === "success") {
-            const { code } = response.params;
-            exchangeCodeForToken(code);
-        }
-    }, [response]);
+      if (error) throw error;
+      if (!data?.url) throw new Error("No OAuth URL returned");
 
-    const exchangeCodeForToken = async (code: string) => {
-        setLoading(true);
-        try {
-            const tokenRes = await fetch(
-                "https://github.com/login/oauth/access_token",
-                {
-                    method: "POST",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        client_id: CONFIG.github.clientId,
-                        client_secret: CONFIG.github.clientSecret,
-                        code,
-                        redirect_uri: redirectUri,
-                    }),
-                }
-            );
+      const result = await WebBrowser.openAuthSessionAsync(
+        data.url,
+        redirectTo,
+      );
 
-            const tokenData = await tokenRes.json();
-            const accessToken = tokenData.access_token;
+      if (result.type === "success" && result.url) {
+        const { error: exchangeError } =
+          await supabase.auth.exchangeCodeForSession(result.url);
 
-            if (!accessToken) {
-                throw new Error("No access token received from GitHub");
-            }
+        if (exchangeError) throw exchangeError;
+      }
+    } catch (err) {
+      console.error("GitHub login error:", err);
+      setError("Something went wrong during GitHub login.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            const userRes = await fetch("https://api.github.com/user", {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            });
-            const user = await userRes.json();
-
-            const emailRes = await fetch("https://api.github.com/user/emails", {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            });
-            const emails = await emailRes.json();
-            const primaryEmail = emails.find(
-                (email: any) => email.primary && email.verified
-            )?.email;
-
-						await AsyncStorage.setItem('userToken', accessToken);
-						await AsyncStorage.setItem('userEmail', primaryEmail || user.email);
-						
-            setUserInfo({ email: primaryEmail || user.email });
-
-            navigation.navigate("UserProfile");
-        } catch (error) {
-            console.error("GitHub OAuth error", error);
-            setSigninError("Something went wrong during login.");
-        } finally {
-            setLoading(false); 
-        }
-    };
-
-    return [!!request, { error: signinError }, loading, promptAsync]; 
+  return { signInWithGithub, loading, error };
 };
